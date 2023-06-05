@@ -22,7 +22,7 @@ if [[ "${opt}" == '-l'  ]] ; then
    cd "${dir}/${prj}" || exit 2	
    ansible-playbook -i localhost, -c local  "$(hostname).yml"
 else
-   ansible-pull -i "${dir}/hosts"  -C main -U "${UREP}"
+   ansible-pull -i "${dir}/hosts"  -C main -U https://github.com/louis-dprs/gsb2023.git
 fi
 
 exit 0
