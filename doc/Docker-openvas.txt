@@ -1,0 +1,38 @@
+Fichier de documentation fait par Adnan Baljic, le 31/01/2019
+
+Configuration machine:
+Système: Carte Mère: Mémoire Vive: 2048
+Stockage: Contrôleur SATA: Ajouter un disque dur VDI de 8Go
+Réseau 1: n-adm
+Réseau 2: n-infra
+USB: Décocher "Activer le contrôleur USB"
+
+Important: Avant exécution du playbook, veillez à ne pas oublier de créer une partition sur /dev/sdb:
+-fdisk /dev/sdb
+-o
+-n
+-p
+-1
+-w
+
+La configuration de docker se fait automatiquement via le playbook s-docker.yml
+De base, s-docker.yml installera seulement docker-openvas-ab. Cependant, vous pouvez aussi installer docker-iredmail-ab en décommentant sa ligne et en
+commentant la ligne docker-openvas-ab. (Tous les 2 sont accessible depuis le port 443, si les 2 sont installés en même temps, il pourrait y avoir conflit.
+
+Manipulation à faire pour la mise en place d'Openvas via Docker:
+Après exécution de gsbboot et du pull-config, il faudra redémarrer la machine (prise en compte des modifications telles que
+les interfaces...) et exécuter la commande ci-dessous:
+docker run -d -p 443:443 -e PUBLIC_HOSTNAME=172.16.0.19 --name openvas mikesplain/openvas
+
+Manipulation à faire pour la mise en place d'Openvas via Docker:
+Après exécution de gsbboot et du pull-config, il faudra redémarrer la machine (prise en compte des modifications telles que
+les interfaces...) et exécuter la commande ci-dessous:
+docker run -d -p 443:443 -e PUBLIC_HOSTNAME=172.16.0.19 --name openvas lejmr/iredmail
+
+Ensuite, il faudra faire: "docker start nom_du_container" pour le démarrer.
+L'accès au container se fait via une machine virtuelle windows 7 avec Mozilla Firefox à jour, via https://172.16.0.19:443.
+
+Le changement du système de fichier de /dev/sdb1 et le montage sur /var/lib/docker se fera automatiquement via le playbook.
+
+Les tests effectués:
+Jeudi 31 janvier 2019, 15:38 par Adnan Baljic= TEST OpenVAS OK

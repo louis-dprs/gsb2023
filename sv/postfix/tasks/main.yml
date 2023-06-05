@@ -1,0 +1,28 @@
+- name: Installation de postfix et de mailutils
+  tags: install postfix
+  apt:
+    name:
+      - postfix
+      - mailutils
+    state: latest
+
+- name: Copie du fichier sasl_passwd
+  tags: sasl_passwd
+  copy:
+    src: sasl_passwd
+    dest: /etc/postfix/sasl/
+
+- name: Copie du fichier main.cf
+  tags: main.cf
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix.main.cf
+
+- name: Commande postmap
+  tags: postmap
+  command: postmap /etc/postfix/sasl/sasl_passwd
+  notify: restart postfix
+
+- name: message d'information pour gmail
+  tags: msg2
+  debug: msg="Il faut activer les applications moins sécurisées sur le compte google"

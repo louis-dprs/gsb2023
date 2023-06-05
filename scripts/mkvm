@@ -1,0 +1,124 @@
+#!/bin/bash
+
+mkvmrelease="v1.2.2"
+
+ovarelease="2023b"
+ovafogrelease="2023b"
+ovafile="$HOME/Téléchargements/debian-bullseye-gsb-${ovarelease}.ova"
+ovafilefog="$HOME/Téléchargements/debian-buster-gsb-${ovafogrelease}.ova"
+deletemode=0
+
+usage () {
+	echo "$0 - version ${mkvmrelease} - Ova version ${ovarelease}"
+	echo "$0 : creation VM et parametrage interfaces"
+	echo "usage : $0 [-r] <s-adm|s-infra|r-int|r-ext|s-proxy|s-mon|s-appli|s-backup|s-itil|s-ncx|s-fog>"
+	echo "       option -r : efface vm existante avant creation nouvelle"
+	exit 1
+}
+
+create_vm () {
+	local nom="$1"
+	local nomova="${ovafile}"
+	if [[ "${nom}" == "s-fog" ]] ; then 
+		nomova="${ovafilefog}"
+	fi
+	if [[ ! -r "${nomova}" ]]; then
+		echo "$0 : erreur ouverture fichier ${nomova} ..."
+		exit 3
+	fi
+	if [[ "${deletemode}" = 1 ]] ; then
+		VBoxManage unregistervm --delete "${nom}"
+	fi
+	vboxmanage import "${nomova}"  --vsys 0 --vmname "${nom}"
+}
+
+setif () {
+	VBoxManage modifyvm  "$1" --nic"${2}" intnet
+	VBoxManage modifyvm  "$1" --intnet"${2}" "$3"
+	VBoxManage modifyvm  "$1" --nictype"${2}" 82540EM
+	VBoxManage modifyvm  "$1" --cableconnected"${2}" on
+	VBoxManage modifyvm  "$1" --nicpromisc"${2}" allow-all
+}
+
+create_if () {
+# enp0s3
+	setif "$1" 1 "$2"
+#(enp0s8)
+	setif "$1" 2 "$3"
+#(enp0s9)
+        if [[ -n "$4" ]] ; then
+	   setif "$1" 3 "$4"
+	fi
+}
+
+
+if [[ $# == 0 ]] ; then
+	usage
+fi
+if [[ $1 == "--help" ]] || [[ $1 == "-h" ]] || [[ $1 == "-V" ]] ; then
+	usage
+fi
+if [[ $1 == "-r" ]] ; then
+	deletemode=1
+	shift
+fi
+vm="$1"
+
+create_vm "${vm}"
+if [[ "${vm}" == "s-adm" ]] ; then
+	bash addint.s-adm
+elif [[ "${vm}" == "s-infra" ]] ; then
+	create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-proxy" ]] ; then
+	create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "r-int" ]] ; then
+#	n-adm, n-link, n-wifi, n-user, n-infra
+	create_if "${vm}" "n-adm" "n-link" "n-wifi"
+	setif "${vm}" 4 "n-user"
+	setif "${vm}" 5 "n-infra"
+elif [[ "${vm}" == "r-ext" ]] ; then
+	./addint.r-ext
+elif [[ "${vm}" == "s-mon" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-appli" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-backup" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-itil" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-nxc" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-fog" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra" "n-user"
+elif [[ "${vm}" == "s-dns-ext" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz"
+elif [[ "${vm}" == "s-web-ext" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz"
+elif [[ "${vm}" == "s-nxc" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-elk" ]] ; then
+        create_if "${vm}" "n-adm" "n-infra"
+elif [[ "${vm}" == "s-lb" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz" "n-dmz-lb"
+elif [[ "${vm}" == "s-lb-web1" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz-lb" "n-dmz-db"
+elif [[ "${vm}" == "s-lb-web2" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz-lb" "n-dmz-db"
+elif [[ "${vm}" == "s-lb-web3" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz-lb" "n-dmz-db"
+elif [[ "${vm}" == "s-lb-bd" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz-db"
+elif [[ "${vm}" == "s-nas" ]] ; then
+        create_if "${vm}" "n-adm" "n-dmz-db"
+elif [[ "${vm}" == "s-peertube" ]] ; then
+	./addint.s-peertube
+elif [[ "${vm}" == "r-vp1" ]] ; then
+	./addint.r-vp1
+elif [[ "${vm}" == "r-vp2" ]] ; then
+	./addint.r-vp2
+elif [[ "${vm}" == "s-agence" ]] ; then
+	create_if "${vm}" "n-adm" "n-agence"
+else
+	echo "$0 : vm ${vm} non prevue "
+        exit 2	
+fi	

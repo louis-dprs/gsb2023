@@ -1,0 +1,12 @@
+---
+
+- name: Installation du dhcp
+  apt:  name=isc-dhcp-server state=present
+
+- name: Copie du fichier isc-dhcp-server
+  copy: src=isc-dhcp-server dest=/etc/default/  
+
+- name: Copie du fichier dhcpd.conf
+  copy: src=dhcpd.conf dest=/etc/dhcp/
+  notify:
+    - restart isc-dhcp-server

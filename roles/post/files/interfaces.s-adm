@@ -1,0 +1,20 @@
+#This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# cote public
+allow-hotplug enp0s3
+iface enp0s3 inet dhcp
+	post-up iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE 
+	post-up echo "1" > /proc/sys/net/ipv4/ip_forward 
+
+# cote N-adm
+allow-hotplug enp0s8
+iface enp0s8 inet static
+	address 192.168.99.99
+	netmask 255.255.255.0
+
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+nom=s-mon-kb
+
+# N-adm (enp0s3)
+
+VBoxManage modifyvm $nom --nic1 intnet
+VBoxManage modifyvm $nom --intnet1 "n-adm"
+VBoxManage modifyvm $nom --nictype1 82540EM
+VBoxManage modifyvm $nom --cableconnected1 on
+VBoxManage modifyvm $nom --nicpromisc1 allow-all
+
+# N-infra (enp0s8)
+
+VBoxManage modifyvm $nom --nic2 intnet
+VBoxManage modifyvm $nom --intnet2 "n-infra"
+VBoxManage modifyvm $nom --nictype2 82540EM
+VBoxManage modifyvm $nom --cableconnected2 on
+VBoxManage modifyvm $nom --nicpromisc2 allow-all

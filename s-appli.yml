@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - goss
+    - appli
+    - ssh-cli
+    - syslog-cli
+    - snmp-agent
+    - ssl-apache
+    - post
+

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+filename=/root/tools/ansible/gsb/goss/$HOSTNAME.yaml
+
+if ! [ -e $filename ] ; then
+	echo gsbchk : erreur ouverture $filename
+	exit 1
+
+fi
+if [ $# == 1] ; then
+	goss -g $filename v
+else
+	goss $*
+fi

@@ -1,0 +1,9 @@
+flush;
+spdflush;
+
+spdadd {{ mynet }}/24 {{ remnet }}/24 any -P out ipsec
+           esp/tunnel/{{ ip1 }}-{{ remip }}/require;
+
+spdadd {{ remnet }}/24 {{ mynet }}/24 any -P in ipsec
+           esp/tunnel/{{ remip }}-{{ ip1 }}/require;
+

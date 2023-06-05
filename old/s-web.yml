@@ -1,0 +1,14 @@
+﻿---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - apache2
+    - snmp-agent
+    - ssh-cli
+    - syslog-cli
+    - post
+    #- mysql
+    - wordpress
+

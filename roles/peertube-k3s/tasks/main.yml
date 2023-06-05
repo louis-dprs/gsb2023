@@ -1,0 +1,22 @@
+---
+  - name: mise a jour de resolv.conf...
+    copy:
+      src: /root/tools/ansible/gsb2023/roles/peertube/files/resolv.conf
+      dest: /etc/
+      mode: '0644'
+        
+  - name: installation de docker...
+    shell: curl https://releases.rancher.com/install-docker/20.10.sh | sh
+
+  - name: attente de l'installation de docker...
+    wait_for:
+      timeout: 30
+      host: localhost
+
+  - name: installation de k3s...
+    shell: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip=192.168.100.20 --flannel-iface=enp0s8" sh -s - --docker
+
+  - name: attente de l'installation de k3s...
+    wait_for:
+      timeout: 25
+      host: localhost

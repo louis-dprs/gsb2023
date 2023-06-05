@@ -1,0 +1,2 @@
+[smtp.gmail.com]:587	gsb.gestsup@gmail.com:GadminAzerty1++
+chmod 600 /etc/postfix/sasl/sasl_passwd

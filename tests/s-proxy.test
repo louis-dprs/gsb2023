@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Test wpad 
+curl wpad/wpad.dat
+
+# Verification ouverture port 8080
+netstat -ln|grep 8080
+
+# Affichage access.log
+tail -5 /var/log/squid3/access.log
+
+# Affichage cache.log
+tail /var/log/squid3/cache.log
+
+
+# Affichage curl
+curl s-proxy:8080

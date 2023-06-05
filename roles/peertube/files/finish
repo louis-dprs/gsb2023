@@ -1,0 +1,9 @@
+MYHOST=peertube.gsb.lan;
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml;
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.cert -subj /CN="${MYHOST}"/O="${MYHOST}" -addext "subjectAltName = DNS:${MYHOST}";
+kubectl create secret tls tls-peertube --key tls.key --cert tls.cert;
+helm repo add postgresql https://charts.bitnami.com/bitnami;
+helm repo add redis https://charts.bitnami.com/bitnami;
+helm repo add mail https://bokysan.github.io/docker-postfix;
+helm install --create-namespace -n peertube peertube-gsb /root/tools/peertube/helm/ ;
+kubectl config view --raw > ~/.kube/config

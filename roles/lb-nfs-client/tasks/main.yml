@@ -1,0 +1,13 @@
+---
+ - name: installation des paquets
+   apt:
+     name:
+     - nfs-common        
+     state: latest
+
+ - name: ajout du montage automatique dans fstab
+   lineinfile:
+    dest: /etc/fstab
+    regexp: ''
+    insertafter: EOF
+    line: '192.168.102.253:/home/ /var/www/html/wordpress nfs soft,timeo=5,intr,rsize=8192,wsize=8192,wsize=8192 0 0'

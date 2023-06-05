@@ -1,0 +1,28 @@
+---
+- name: installation de wireguard
+  apt:
+    name: wireguard
+    state: present
+
+- name: installation de ferm
+  apt:
+    name: ferm
+    state: present
+
+- name: installation de wireguard-tools
+  apt:
+    name: wireguard-tools
+    state: present
+
+- name: delais 2 secondes isc-dhcp-service
+  become: yes
+  lineinfile:
+    path: /etc/init.d/isc-dhcp-server
+    insertafter: '^\s+start\)$'
+    line: "                sleep 2"
+    firstmatch: yes
+    state: present
+    backup: yes
+
+#- name: renommage du fichier de configuration
+#  command: "mv /etc/wireguard/wg0-b.conf /etc/wireguard/wg0.conf"

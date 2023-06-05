@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -z ${UREP+x} ]; then 
+	UREP=https://gitea.lyc-lecastel.fr/louis.depres/gsb2023.git 
+fi
+
+dir=/root/tools/ansible
+
+[ -e "${dir}" ] || mkdir -p "${dir}"
+
+cd  "${dir}" || exit 1
+
+hostname  > hosts
+ansible-pull -i "${dir}/hosts"  -C main -U "${UREP}"
+
+exit 0

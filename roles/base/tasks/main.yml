@@ -1,0 +1,76 @@
+---
+
+- name: Copie sources.list
+  copy:
+    src: sources.list.{{ ansible_distribution }}
+    dest: /etc/apt/sources.list
+
+- name: Copie apt.conf pour proxy 
+  copy:
+    src: apt.conf
+    dest: /etc/apt/apt.conf
+  when: ansible_hostname != "s-adm"    
+
+#- name: Sysctl desactive ipv6
+#  sysctl:
+#    name: net.ipv6.conf.all.disable_ipv6
+#    value: 1
+#    sysctl_set: yes
+#    state: present
+#    reload: yes
+
+- name: Update + Upgrade
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+
+- name: Install paquets
+  apt:
+    state: present
+    name: 
+    - vim 
+    - ntp 
+    - mc
+    - tcpdump
+    - curl
+    - net-tools
+    - rsync
+    - sudo
+    - iptables
+
+- name: Desinstall paquets
+  apt:
+    state: absent
+    name: 
+    - nfs-common 
+    - rpcbind 
+    - bluetooth
+
+- name: Configure Vim
+  alternatives:
+    name: editor
+    path: /usr/bin/vim
+
+- name:  Generation /etc/hosts
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+  when: ansible_hostname != "s-proxy"
+
+- name:  Generation /etc/hosts pour s-proxy
+  template:
+    src: hosts.s-proxy.j2
+    dest: /etc/hosts
+  when: ansible_hostname == "s-proxy"
+
+- name: Desactive IPV6 avec sysctl
+  sysctl:
+    name: "{{ item }}"
+    value: 1
+    state: present
+    reload: yes
+  with_items:
+    - net.ipv6.conf.all.disable_ipv6
+    - net.ipv6.conf.default.disable_ipv6
+    - net.ipv6.conf.lo.disable_ipv6

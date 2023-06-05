@@ -1,0 +1,63 @@
+package:
+  apache2:
+    installed: true
+    versions:
+    - 2.4.10-10+deb8u7
+  php5:
+    installed: true
+    versions:
+    - 5.6.29+dfsg-0+deb8u1
+port:
+  tcp:22:
+    listening: true
+    ip:
+    - 0.0.0.0
+  tcp6:22:
+    listening: true
+    ip:
+    - '::'
+  tcp6:80:
+    listening: true
+    ip:
+    - '::'
+service:
+  apache2:
+    enabled: true
+    running: true
+  sshd:
+    enabled: true
+    running: true
+user:
+  sshd:
+    exists: true
+    uid: 105
+    gid: 65534
+    groups:
+    - nogroup
+    home: /var/run/sshd
+    shell: /usr/sbin/nologin
+command:
+  egrep 192.168.102.14:/export/www /etc/fstab:
+    exit-status: 0
+    stdout:
+    - 192.168.102.14:/export/www /var/www/html nfs _netdev rw 0 0
+    stderr: []
+    timeout: 10000
+process:
+  apache2:
+    running: true
+  sshd:
+    running: true
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.11/24
+  enp0s8:
+    exists: true
+    addrs:
+    - 192.168.101.1/24
+  enp0s9:
+    exists: true
+    addrs:
+    - 192.168.102.1/24

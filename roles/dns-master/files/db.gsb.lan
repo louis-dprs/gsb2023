@@ -1,0 +1,41 @@
+; 0.2 - putconf - vendredi 12 avril 2013, 08:54:33 (UTC+0200)
+
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     s-infra.gsb.lan. root.s-infra.gsb.lan. (
+                        2023060100      ; Serial
+                        7200	        ; Refresh
+                        86400           ; Retry
+                        8419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+@       	IN      NS      s-infra.gsb.lan.
+@		IN      NS      s-backup.gsb.lan.
+@      	        IN      A       127.0.0.1
+@       	IN      AAAA    ::1
+s-infra  	IN      A       172.16.0.1
+s-backup        IN      A	172.16.0.4
+s-proxy         IN      A       172.16.0.2
+s-appli    	IN      A       172.16.0.3
+s-win    	IN      A       172.16.0.6
+s-mess   	IN      A       172.16.0.7
+s-nxc		IN	A	172.16.0.7
+s-docker	IN	A	172.16.0.7
+s-mon    	IN      A       172.16.0.8
+s-itil		IN	A	172.16.0.9
+s-elk		IN	A	172.16.0.11
+s-webcom	IN	A	172.16.0.12
+s-gestsup	IN	A	172.16.0.17
+r-int    	IN      A       172.16.0.254
+r-int-lnk    	IN      A       192.168.200.254
+r-ext  		IN      A       192.168.200.253
+s-lb		IN	A	192.168.100.10
+s-web1          IN      A       192.168.101.1
+s-web2          IN      A       192.168.101.2
+s-lb.gsb.lan    IN      A       192.168.100.10
+ns   	        IN      CNAME   s-infra.gsb.lan.
+wpad		IN	CNAME	s-infra.gsb.lan.
+s-peertube	IN	A	192.168.100.20
+peertube 	IN 	CNAME 	s-peertube

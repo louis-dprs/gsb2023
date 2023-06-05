@@ -1,0 +1,12 @@
+---
+- name: Create mysql user
+  mysql_user: 
+    host: "{{ cli_ip }}"
+    name: "{{ maria_dbuser }}"
+    password: "{{ maria_dbpasswd }}"
+    priv: "*.*:ALL"
+
+- name: Copie du fichier resolv.conf
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf

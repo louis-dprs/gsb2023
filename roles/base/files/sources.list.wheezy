@@ -1,0 +1,22 @@
+# 
+
+# deb cdrom:[Debian GNU/Linux 6.0.0 _Squeeze_ - Official i386 NETINST Binary-1 20110205-14:34]/ wheezy main
+
+#deb cdrom:[Debian GNU/Linux 6.0.0 _Squeeze_ - Official i386 NETINST Binary-1 20110205-14:34]/ wheezy main
+
+
+deb http://ftp.fr.debian.org/debian/ wheezy main contrib non-free
+#deb-src http://ftp.fr.debian.org/debian/ wheezy main
+
+deb http://security.debian.org/ wheezy/updates main
+#deb-src http://security.debian.org/ wheezy/updates main
+
+deb http://ftp.fr.debian.org/debian/ wheezy-updates main
+#deb-src http://ftp.fr.debian.org/debian/ wheezy-updates main
+#deb http://backports.debian.org/debian-backports wheezy-backports main
+#deb http://packages.steve.org.uk/slaughter/wheezy/ ./
+#deb https://rex.linux-files.org/debian/ wheezy rex
+
+
+deb http://http.debian.net/debian wheezy-backports main
+

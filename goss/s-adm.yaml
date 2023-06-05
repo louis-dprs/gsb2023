@@ -1,0 +1,72 @@
+package:
+  dnsmasq:
+    installed: true
+  squid:
+    installed: true
+addr:
+  tcp://depl.sio.lan:80:
+    reachable: true
+    timeout: 500
+port:
+  tcp:53:
+    listening: true
+    ip:
+    - 0.0.0.0
+  tcp6:53:
+    listening: true
+    ip:
+    - '::'
+  udp:53:
+    listening: true
+    ip:
+    - 0.0.0.0
+  udp:67:
+    listening: true
+    ip:
+    - 0.0.0.0
+  udp6:53:
+    listening: true
+    ip:
+    - '::'
+service:
+  dnsmasq:
+    enabled: true
+    running: true
+  squid:
+    enabled: true
+    running: true
+  ssh:
+    enabled: true
+    running: true
+user:
+  dnsmasq:
+    exists: true
+    gid: 65534
+    groups:
+    - nogroup
+    home: /var/lib/misc
+    shell: /usr/sbin/nologin
+group:
+  ssh:
+    exists: true
+command:
+  /sbin/sysctl net.ipv4.ip_forward:
+    exit-status: 0
+    stdout:
+    - net.ipv4.ip_forward = 1
+    stderr: []
+    timeout: 10000
+dns:
+  depl.sio.lan:
+    resolveable: true
+    timeout: 500
+process:
+  dnsmasq:
+    running: true
+  squid:
+    running: true
+interface:
+  enp0s8:
+    exists: true
+    addrs:
+    - 192.168.99.99/24

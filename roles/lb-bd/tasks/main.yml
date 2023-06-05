@@ -1,0 +1,35 @@
+---
+
+- name: modules python pour
+  apt:
+    name: python3-pymysql
+    state: present
+
+- name: install mariadb-server
+  apt:
+    name: mariadb-server
+    state: present
+
+- name: Cree Bd wordpress
+  mysql_db:
+    db: wordpressdb
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: Ouvre port 3306 mariadb-server
+  replace:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: '^bind-address.*'
+    replace: '#bind-adress = 127.0.0.1'
+    backup: yes
+  notify: restart mariadb
+
+- name: Create MySQL user for wordpress
+  mysql_user:
+    name: wordpressuser
+    password: wordpresspasswd
+    priv: "wordpressdb.*:ALL"
+    host: '%'
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+

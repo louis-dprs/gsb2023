@@ -1,0 +1,12 @@
+cd goss/
+goss -g r-vp1.yaml v
+goss  -g r-vp1.yaml aa wireguard
+goss add interface enp0s3
+goss add interface enp0s8
+goss add interface enp0s9
+goss add interface wg0
+goss aa wireguard
+goss add package wireguard-tools
+goss add service wg-quick@wg0
+goss add command "ping -c4  10.0.0.2"
+goss add file "/etc/wireguard/wg0.conf"

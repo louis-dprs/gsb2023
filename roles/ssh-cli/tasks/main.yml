@@ -1,0 +1,14 @@
+---
+
+- name: Creation de .ssh 
+  file: 
+    path: /root/.ssh
+    mode: 0700
+    state: directory
+
+- name: Copie cle publiique depuis s-adm 
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: http://s-adm.gsb.adm/id_rsa.pub
+

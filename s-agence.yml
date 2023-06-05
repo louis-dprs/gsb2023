@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - ssh-cli
+    - syslog-cli
+    - post
+    - goss

@@ -1,0 +1,89 @@
+---
+- name: Creation du repertoire nextcloud
+  file:
+    path: /root/nextcloud
+    state: directory
+
+- name: Copie du script get_docker
+  copy: 
+    src: get_docker.sh
+    dest: /root/nextcloud
+
+- name: Execution du script get_docker
+  script: /root/nextcloud/get_docker.sh
+
+- name: Installation de docker-compose
+  shell: curl -L "https://github.com/docker/compose/releases/download/1.28.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+- name: Attribution des droits de docker compose
+  file:
+    path: /usr/local/bin/docker-compose
+    mode: '755'
+
+- name: Copie de docker-compose.yml
+  copy: 
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/docker-compose.yml
+    dest: /root/nextcloud
+
+- name: Execution du fichier docker-compose.yml
+  shell: docker-compose up -d
+  args:
+    chdir: /root/nextcloud
+
+- name: Installation de Nginx
+  package:
+    name: nginx
+    state: present
+
+- name: Copie de config.php dans /root/nextcloud/nextcloud/config
+  copy:
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/config.php
+    dest: /root/nextcloud/nextcloud/config 
+
+- name: Copie de nginx-selfsigned.key
+  copy:
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/nginx-selfsigned.key
+    dest: /etc/ssl/private
+
+- name: Copie nginx-selfsigned.crt
+  copy:
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/nginx-selfsigned.crt
+    dest: /etc/ssl/certs
+
+- name: Copie de dhparam.pem
+  copy:
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/dhparam.pem
+    dest: /etc/nginx
+
+- name: Copie de self-signed.conf
+  copy:
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/self-signed.conf
+    dest: /etc/nginx/snippets
+
+- name: Copie de ssl-params.conf
+  copy:
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/ssl-params.conf
+    dest: /etc/nginx/snippets
+
+- name: Copie de /etc/nginx/site-availables/proxy
+  copy:
+    src: /root/tools/ansible/gsb2021/roles/docker-nextcloud/files/proxy
+    dest: /etc/nginx/sites-available
+
+- name: Suppression de /etc/nginx/sites-enabled/default
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Creation de lien symbolique avec /etc/nginx/sites-available/proxy dans /etc/n$
+  file:
+    src: /etc/nginx/sites-available/proxy
+    dest: /etc/nginx/sites-enabled/proxy
+    owner: root
+    group: root
+    state: link
+
+- name: Redemarage de Nginx
+  service:
+    name: nginx
+    state: restarted

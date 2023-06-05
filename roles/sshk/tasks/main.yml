@@ -1,0 +1,10 @@
+---
+
+
+- name: creation user admu
+  user: name=admu comment="admu" shell=/bin/bash
+
+- name: Copie cle ssh
+  authorized_key: user=root key="{{lookup('file','/home/admu/.ssh/id_rsa_pub') }}"
+
+

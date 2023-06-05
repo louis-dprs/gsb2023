@@ -1,0 +1,18 @@
+---
+
+- name: Installation bind9
+  file:  
+    path: /var/www/html/gsbstore/
+    state: directory
+    mode: '0755'
+
+- name: Copie getall-latest
+  copy:
+    src: getall-latest
+    dest: /var/www/html/gsbstore
+
+- name: Copie getall-2021
+  copy:
+    src: getall-2021
+    dest: /var/www/html/gsbstore
+

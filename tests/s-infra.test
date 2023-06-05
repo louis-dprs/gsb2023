@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Tests resolution directe dans gsb.lan nom court
+host s-infra
+host s-mon
+
+# Tests resolution directe nom long
+host s-infra.gsb.lan
+host s-mon.gsb.lan
+
+# Tests resolution inverse
+host 172.16.0.2
+host 172.16.0.9
+
+# Tests resolution hors zone
+host lemonde.fr
+host free.fr
+
+# Tests de connectivite 
+ping -c 2 172.16.0.254
+ping -c 2 s-adm.gsb.adm
+
+# Test wpad 
+curl wpad/wpad.dat

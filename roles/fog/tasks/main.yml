@@ -1,0 +1,26 @@
+---
+- name: creation d'un repertoire fog
+  file:
+    path: /root/tools/fog
+    state: directory
+
+- name: recuperation de l'archive d'installation fog sur git
+  git:
+    repo: https://gitea.lyc-lecastel.fr/gadmin/fog.git
+    dest: /root/tools/fog/
+    clone: yes
+    update: yes
+
+- name: Modification fichier bash (desac UDPCast)
+  ansible.builtin.lineinfile:
+    path: /root/tools/fog/lib/common/functions.sh
+    regexp: '^configureUDPCast\(\).*'
+    line: "configureUDPCast() {\nreturn"
+    backup: yes
+
+- name: fichier config fogsettings
+  command: "cp /root/tools/ansible/roles/fog/files/fogsettings /opt/fog/"
+
+- name: fichier fogsettings en .fogsettings
+  command: "mv /opt/fog/fogsettings /opt/fog/.fogsettings"
+

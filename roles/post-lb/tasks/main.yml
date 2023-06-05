@@ -1,0 +1,24 @@
+---
+
+
+- name: Copie interfaces
+  copy: src=interfaces.{{ ansible_hostname }} dest=/etc/network/interfaces
+
+- name: Copie resolv.conf
+  copy: src=resolv.conf dest=/etc/
+  when: ansible_hostname != "s-adm" and ansible_hostname != "s-proxy"
+
+- name: pas de chgt resolv.conf pour r-vp2
+  meta: end_play
+  when: ansible_hostname == "r-vp2"
+
+- name: Copie resolv.conf pour s-proxy
+  copy: src=resolv.conf.s-proxy dest=/etc/resolv.conf
+  when: ansible_hostname == "s-proxy"
+
+#- name: Confirm
+#  prompt: "<Entree> pour redemarrer ..."
+
+#- name: Reboot
+#  shell: reboot
+

@@ -1,0 +1,21 @@
+package:
+  mysql-server:
+    installed: true
+    versions:
+    - 5.5.54-0+deb8u1
+command:
+  egrep "#bind-address" /etc/mysql/my.cnf:
+    exit-status: 0
+    stdout:
+    - "#bind-address\t\t= 127.0.0.1"
+    stderr: []
+    timeout: 10000
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.13/24
+  enp0s8:
+    exists: true
+    addrs:
+    - 192.168.102.50/24

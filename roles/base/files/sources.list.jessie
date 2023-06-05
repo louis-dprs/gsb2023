@@ -1,0 +1,22 @@
+# 
+
+# deb cdrom:[Debian GNU/Linux 6.0.0 _Squeeze_ - Official i386 NETINST Binary-1 20110205-14:34]/ jessie main
+
+#deb cdrom:[Debian GNU/Linux 6.0.0 _Squeeze_ - Official i386 NETINST Binary-1 20110205-14:34]/ jessie main
+
+
+deb http://ftp.fr.debian.org/debian/ jessie main contrib non-free
+#deb-src http://ftp.fr.debian.org/debian/ jessie main
+
+deb http://security.debian.org/ jessie/updates main
+#deb-src http://security.debian.org/ jessie/updates main
+
+deb http://ftp.fr.debian.org/debian/ jessie-updates main
+#deb-src http://ftp.fr.debian.org/debian/ jessie-updates main
+#deb http://backports.debian.org/debian-backports jessie-backports main
+#deb http://packages.steve.org.uk/slaughter/jessie/ ./
+#deb https://rex.linux-files.org/debian/ jessie rex
+
+
+#deb http://http.debian.net/debian jessie-backports main
+

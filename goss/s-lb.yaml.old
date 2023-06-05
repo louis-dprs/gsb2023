@@ -1,0 +1,65 @@
+file:
+  /etc/haproxy/haproxy.cfg:
+    exists: true
+    mode: "0644"
+    size: 1518
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+package:
+  haproxy:
+    installed: true
+port:
+  tcp:80:
+    listening: true
+    ip:
+    - 192.168.100.10
+service:
+  haproxy:
+    enabled: true
+    running: true
+user:
+  haproxy:
+    exists: true
+    uid: 111
+    gid: 117
+    groups:
+    - haproxy
+    home: /var/lib/haproxy
+    shell: /bin/false
+group:
+  haproxy:
+    exists: true
+    gid: 117
+command:
+  egrep "balance\s+roundrobin" /etc/haproxy/haproxy.cfg:
+    exit-status: 0
+    stdout:
+    - balance roundrobin
+    stderr: []
+    timeout: 10000
+  egrep "bind\s+192.168.100.10:80" /etc/haproxy/haproxy.cfg:
+    exit-status: 0
+    stdout:
+    - bind 192.168.100.10:80
+    stderr: []
+    timeout: 10000
+  egrep "mode\s+http" /etc/haproxy/haproxy.cfg:
+    exit-status: 0
+    stdout:
+    - "mode\thttp"
+    stderr: []
+    timeout: 10000
+process:
+  haproxy:
+    running: true
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.10/24
+  enp0s8:
+    exists: true
+    addrs:
+    - 192.168.100.10/24

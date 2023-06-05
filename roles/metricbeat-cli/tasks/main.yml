@@ -1,0 +1,23 @@
+---
+- name: Récupération de metricbeat
+  get_url:
+    url: http://s-adm.gsb.adm/gsbstore/metricbeat-${BEATVER}-amd64.deb
+    dest: /tmp/
+
+- name: Installation de metricbeat
+  apt:
+    deb: /tmp/metricbeat-${BEATVER}-amd64.deb
+
+- name: Changement du fichier de conf
+  copy:
+    src: metricbeat.yml
+    dest: /etc/metricbeat/metricbeat.yml
+
+- name: Configuration de metricbeat
+  shell: metricbeat modules enable system  
+  notify: restart metricbeat
+ 
+- name: Lancement de la configuration de metricbeat
+  shell: metricbeat setup -e
+  notify: restart metricbeat
+

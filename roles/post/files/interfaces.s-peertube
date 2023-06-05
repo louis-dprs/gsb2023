@@ -1,0 +1,17 @@
+### 0.1 - putconf - jeudi 30 mars 2023, 8:11:30 (UTC+0100)
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# carte n-adm
+allow-hotplug enp0s3
+iface enp0s3 inet static
+	address 192.168.99.120/24
+	gateway 192.168.99.99
+
+# Réseau n-dmz
+allow-hotplug enp0s8
+iface enp0s8 inet static
+        address 192.168.100.20/24
+	post-up systemctl start k3s 

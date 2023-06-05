@@ -1,0 +1,122 @@
+- name: Installation des dépendances
+  apt:
+    name:
+    - apache2
+    - mariadb-server
+    - python3-pip
+    - php
+    - php-mysql
+    - php-xml
+    - php-curl
+    - php-imap
+    - php-zip
+    - php-mbstring
+    - php-gd
+    - php-intl
+    - php-ldap
+    - snapd
+    - unzip
+    state: present
+
+- name: Install pymysql
+  become: true
+  pip:
+    name: pymysql
+    state: present
+
+- name: Copie de php.ini
+  copy:
+    src: php.ini
+    dest: /etc/php/7.4/apache2
+
+- name: Copie de apache2.conf
+  copy:
+    src: apache2.conf
+    dest: /etc/apache2
+
+- name: Suppression de l'ancien security.conf
+  file:
+    path: /etc/apache2/conf-available/security.conf
+    state: absent
+
+- name: Suppression de l'ancien lien symbolique
+  file:
+    path: /etc/apache2/conf-enabled/security.conf
+    state: absent
+
+- name: Copie de security.conf pour apache2
+  copy:
+    src: security.conf
+    dest: /etc/apache2/conf-available
+
+- name: Création d'un lien symbolique pour security.conf
+  ansible.builtin.shell: ln -s /etc/apache2/conf-available/security.conf /etc/apache2/conf-enabled/
+
+- name: mariadb en mode enabled
+  service:
+    name: mysql
+    enabled: yes
+
+- name: Création de l'utilisateur gestsup
+  mysql_user:
+    name: gestsup
+    password: gestsup
+    priv: '*.*:ALL,GRANT'
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Decompression du fichier gestsup.zip
+  ansible.builtin.unarchive:
+    src: http://s-adm.gsb.adm/gsbstore/gestsup_3.2.15.zip
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Suppression de index.html
+  ansible.builtin.file:
+    path: /var/www/html/index.html
+    state: absent
+
+- name: Création de l'utilisateur et attribution au groupe www-data
+  ansible.builtin.shell: adduser gestsup --ingroup www-data
+
+- name: Attribution des repertoires a www-data et gestsup
+  ansible.builtin.file:
+    path: /var/www/html
+    owner: gestsup
+    group: www-data
+    recurse: yes
+
+- name: Attribution de droit 750
+  ansible.builtin.shell: find /var/www/html/ -type d -exec chmod 750 {} \;
+
+- name: Attribution de droit en 640
+  ansible.builtin.shell: find /var/www/html/ -type f -exec chmod 640 {} \;
+
+- name: Droit 770 pour le repertoire upload
+  ansible.builtin.file:
+    path: /var/www/html/upload
+    mode: '0770'
+    recurse: yes
+
+- name: Droit 770 pour le repertoire images/model
+  ansible.builtin.file:
+    path: /var/www/html/images/model
+    mode: '0770'
+    recurse: yes
+
+- name: Droit 770 pour le repertoire backup
+  ansible.builtin.file:
+    path: /var/www/html/backup
+    mode: '0770'
+    recurse: yes
+
+- name: Droit 770 pour le repertoire _SQL
+  ansible.builtin.file:
+    path: /var/www/html/_SQL
+    mode: '0770'
+    recurse: yes
+
+- name: Droit 660 pour connect.php
+  ansible.builtin.file:
+    path: /var/www/html/connect.php
+    mode: '0660'

@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+
+  vars:
+   - ip1: 192.168.0.52
+   - remip: 192.168.0.51
+   - mynet: 172.16.128.0
+   - remnet: 192.168.1.0
+
+  roles:
+   - fw-ferm

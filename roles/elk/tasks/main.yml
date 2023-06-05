@@ -1,0 +1,27 @@
+---
+  - name: Création répertoire docker
+    file:
+      path: /root/elk
+      state: directory
+
+  - name: Vérification d'ELK
+    stat:
+      path: /root/elk/docker-compose.yml
+    register: elk
+
+  - name: Installation d'ELK 
+    ansible.builtin.git:
+      repo: https://github.com/deviantony/docker-elk.git
+      dest: /root/elk/
+    when: not elk.stat.exists
+
+  - name: Configuration d'ELK
+    replace:
+      path: /root/elk/elasticsearch/config/elasticsearch.yml
+      regexp: 'xpack.license.self_generated.type: trial'
+      replace: 'xpack.license.self_generated.type: basic'
+     
+  - name: Execution du fichier docker-compose.yml
+    shell: docker compose up -d
+    args:
+      chdir: /root/elk

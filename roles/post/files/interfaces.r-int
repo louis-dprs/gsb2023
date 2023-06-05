@@ -1,0 +1,37 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# Reseau N-adm
+allow-hotplug enp0s3
+iface enp0s3 inet static
+	address 192.168.99.12/24
+	
+
+# Reseau liaison avec r-ext
+allow-hotplug enp0s8
+iface enp0s8 inet static
+	address 192.168.200.254/24
+	gateway 192.168.200.253
+	
+
+# Reseau wifi
+allow-hotplug enp0s9
+iface enp0s9 inet static
+	address 172.16.65.254/24
+	
+
+# Reseau user
+allow-hotplug enp0s10
+iface enp0s10 inet static
+	address 172.16.64.254/24
+	
+
+# Reseau infra
+allow-hotplug enp0s16
+iface enp0s16 inet static
+	address 172.16.0.254/24
+	post-up sleep 10 && systemctl restart isc-dhcp-server	

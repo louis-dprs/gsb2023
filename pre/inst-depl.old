@@ -1,0 +1,48 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+GITUSR=gitgsb
+GITPRJ=gsb
+apt update && apt upgrade
+apt install -y apache2 git 
+getent passwd "${GITUSR}" >> /dev/null
+if [[ $? != 0 ]]; then
+  echo "creation utilisateur "${GITUSR}" ..."
+  /sbin/useradd -m -d /home/"${GITUSR}" -s /bin/bash "${GITUSR}" 
+  echo "${GITUSR}:${GITUSR}" | /sbin/chpasswd 
+else
+  echo "utilisateur "${GITUSR}" existant..."
+fi
+su -c "git init --share --bare /home/${GITUSR}/${GITPRJ}.git" "${GITUSR}"
+su -c "cd ${GITPRJ}.git/.git/hooks && mv post-update.sample post-update" "${GITUSR}"
+[[ -h /var/www/html/"${GITPRJ}".git ]]|| ln -s /home/"${GITUSR}"/"${GITPRJ}".git /var/www/html/"${GITPRJ}".git
+[[ -d /var/www/html/gsbstore ]]|| mkdir /var/www/html/gsbstore
+ 
+(cat <<EOT > /var/www/html/gsbstore/getall
+
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+
+GLPIREL=9.4.5
+wget -nc https://github.com/glpi-project/glpi/releases/download/\${GLPIREL}/glpi-\${GLPIREL}.tgz
+ 
+FIREL=9.4+2.4
+wget -nc -O fusioninventory-glpi\${FIREL}.tag.gz https://github.com/fusioninventory/fusioninventory-for-glpi/archive/glpi\${FIREL}.tar.gz 
+#https://github.com/fusioninventory/fusioninventory-for-glpi/archive/glpi9.4+2.4.tar.g 
+ 
+FIAGREL=2.5.2 
+wget -nc https://github.com/fusioninventory/fusioninventory-agent/releases/download/\${FIAGREL}/fusioninventory-agent_windows-x64_\${FIAGREL}.exe
+ 
+wget -nc https://github.com/fusioninventory/fusioninventory-agent/releases/download/\$FIAGREL/fusioninventory-agent_windows-x86_\${FIAGREL}.exe
+ 
+FOGREL=1.5.7
+wget -nc https://github.com/FOGProject/fogproject/archive/\${FOGREL}.tar.gz -O fogproject-\${FOGREL}.tar.gz
+ 
+wget -nc https://fr.wordpress.org/wordpress-5.3.2-fr_FR.tar.gz
+
+EOT
+)
+cat /var/www/html/gsbstore/getall
+

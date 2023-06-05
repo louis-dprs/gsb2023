@@ -1,0 +1,47 @@
+---
+  - name: Installation des paquets
+    apt: name={{item}} state=present force=yes
+    with_items:
+      - dmidecode
+      - hwdata
+      - ucf
+      - hdparm
+      - perl
+      - libuniversal-require-perl
+      - libwww-perl
+      - libparse-edid-perl
+      - libproc-daemon-perl
+      - libfile-which-perl
+      - libhttp-daemon-perl
+      - libxml-treepp-perl
+      - libyaml-perl
+      - libnet-cups-perl
+      - libnet-ip-perl
+      - libdigest-sha-perl
+      - libsocket-getaddrinfo-perl
+      - libtext-template-perl
+
+  - name: Creation du repertoire fi
+    file: path=/root/fi state=directory owner=www-data group=www-data
+
+  - name: Installation de fusioninventory
+    get_url:
+      url: http://debian.fusioninventory.org/downloads/fusioninventory-agent_2.5-3_all.deb
+      dest: /root/fi
+      remote_src: yes
+      owner: www-data
+      group: www-data
+
+  - name: Installation du paquet .deb
+    apt:
+      deb: /root/fi/fusioninventory-agent_2.5-3_all.deb
+
+  - name: Configuration du fichier agent.cfg
+    replace:
+      dest: /etc/fusioninventory/agent.cfg
+      regexp: '#server = http://server.domain.com/glpi/plugins/fusioninventory/'
+      replace: 'server = http://172.16.0.9/plugins/fusioninventory/'
+      backup: yes
+
+  - debug:
+      msg: "Faire un systemectl restart fusioninventory-agent puis un reload"

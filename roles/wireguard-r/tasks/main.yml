@@ -1,0 +1,42 @@
+---
+- name: installation de wireguard
+  apt:
+    name: wireguard
+    state: present
+
+- name: installation de ferm
+  apt:
+    name: ferm
+    state: present
+
+- name: installation de wireguard-tools
+  apt:
+    name: wireguard-tools
+    state: present
+
+- name: création du dossier conf
+  file:
+    path: /root/confwg
+    state: directory
+
+- name: copie du script mk-wgconf.sh
+  copy:
+    src: mk-wgconf.sh
+    dest: /root/confwg
+
+- name: execution script mk-wgconf.sh
+  command: bash ./mk-wgconf.sh
+  args:
+    chdir: /root/confwg
+       
+- name: copie du fichier de configuration
+  copy:
+    src: /root/confwg/wg0-a.conf
+    dest: /etc/wireguard/wg0.conf
+
+- name: Restart service httpd, in all cases
+  ansible.builtin.service:
+    name: wg-quick@wg0
+    enabled: yes
+    state: restarted
+

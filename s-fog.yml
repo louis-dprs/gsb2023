@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - goss
+    - dhcp-fog
+    - ssh-cli
+    - snmp-agent
+    - syslog-cli
+    - fog
+    - post

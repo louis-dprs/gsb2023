@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - ssh-cli
+    - syslog-cli
+    - snmp-agent
+    - nginx
+    - post

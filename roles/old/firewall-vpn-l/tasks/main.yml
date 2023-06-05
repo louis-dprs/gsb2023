@@ -1,0 +1,8 @@
+---
+- name : installer ferm
+  apt: name=ferm state=present
+  
+- name: fichier parefeu pour VPN
+  copy: src=ferm.conf dest=/etc/ferm/ferm.conf
+  notify:
+    - Restart ferm

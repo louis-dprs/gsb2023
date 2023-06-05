@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+
+  vars:
+   - ip1: 192.168.0.51
+   - remip: 192.168.0.52
+   - mynet: 192.168.1.0
+   - remnet: 172.16.128.0
+
+  roles:
+   - base
+   - goss
+#   - snmp-agent
+   - post
+   - wireguard-r
+   - ssh-cli
+   - syslog-cli
+   

@@ -1,0 +1,54 @@
+#!/bin/bash
+version="1.8"
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename ${__file})"
+__root="$(cd "$(dirname "${__dir}")" && pwd)" 
+echo "dir : ${__dir}"
+echo "file : ${__file}"
+echo "base : ${__base}"
+echo "root : ${__root}"
+
+# version 1.8
+# install git si besoin
+# install ansible si besoin + backports si wheezy
+
+readonly base=/root/tools/ansible
+readonly slist=/etc/apt/sources.list
+readonly host=depl
+if [[ -z ${DEPL+x} ]]; then
+  echo "erreur : DEPL indefini"
+  echo " DEPL : adresse serveur deploiement"
+  echo "export DEPL=xyzt ; ./$0"
+  exit 1
+fi
+
+hostf="${host}.local" 
+prj=gsb2023
+APT=apt
+
+which git >> /dev/null
+if [[ $? != 0 ]]; then
+	${APT} update
+	echo "installation de git ..."
+	${APT} install -y git-core
+fi
+${APT} update
+#${APT} upgrade -y
+
+which ansible >> /dev/null
+if [[ $? != 0 ]]; then
+	echo "installation de ansible ..."
+	${APT} install -y ansible 
+fi
+
+[ -e "${base}" ] || mkdir -p "${base}"
+
+grep "${hostf}" /etc/hosts > /dev/null || echo "${DEPL} ${hostf} ${host}" >> /etc/hosts
+cd "${base}"
+
+cp ${prj}/pull-config ${base}
+
+#echo "N'oubliez pasz d'indiquer l'adresse DEPL dans '/root/tools/ansible/pull-config'"
+echo "Vous pouvez lancer 'bash pull-config' depuis ${base} ..."
+

@@ -1,0 +1,70 @@
+- name: 00 - cree repertoire wordpress pour export nfs
+  file:
+    path: /home/wordpress
+    state: directory
+
+- name: 05 - Install nfs-server
+  apt:
+    name: nfs-server
+    state: present
+
+- name: 10 - creation fichier exports nfs
+  ansible.builtin.blockinfile:
+    path: /etc/exports
+    block: |
+      /home/wordpress 192.168.102.0/255.255.255.0(rw,no_root_squash,subtree_check)
+
+- name: 20 - decompresse wordpress
+  unarchive:
+    src: https://fr.wordpress.org/latest-fr_FR.tar.gz
+    dest: /home/
+    remote_src: yes
+
+- name: 22 - change owner et group pour repertoire wordpress
+  file:
+    path: /home/wordpress
+    state: directory
+    recurse: yes
+    owner: www-data
+    group: www-data
+
+- name: 30 - genere fichier de config wordpress
+  copy:
+    src: /home/wordpress/wp-config-sample.php
+    dest: /home/wordpress/wp-config.php
+    remote_src: yes
+
+- name: 35 - ajuste variable dbname dans fichier de config wp-config.php
+  replace:
+    path: /home/wordpress/wp-config.php
+    regexp: "votre_nom_de_bdd"
+    replace: "wordpressdb"
+    backup: yes
+
+
+- name: 40 ajuste variable dbusername dans fichier de config wp-config.php
+  replace:
+    path: /home/wordpress/wp-config.php
+    regexp: "votre_utilisateur_de_bdd"
+    replace: "wordpressuser"
+    backup: yes
+
+- name: 45 - ajuste variable mdp dans fichier de config wp-config.php
+  replace:
+    path: /home/wordpress/wp-config.php
+    regexp: "votre_mdp_de_bdd"
+    replace: "wordpresspasswd"
+    backup: yes
+
+- name: 50 - ajuste hostname fichier wp-config.php
+  replace:
+    path: /home/wordpress/wp-config.php
+    regexp: "localhost"
+    replace: "192.168.102.254"
+    backup: yes
+
+- name: 55 - relance nfs
+  service:
+    name: nfs-server
+    state: restarted
+    enabled: yes

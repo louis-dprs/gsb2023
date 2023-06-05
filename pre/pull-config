@@ -1,0 +1,28 @@
+#!/bin/bash
+
+dir=/root/tools/ansible
+prj=gsb2023
+opt=""
+
+if [ -z ${UREP+x} ]; then 
+	UREP=https://gitea.lyc-lecastel.fr/louis.depres/gsb2023.git 
+fi
+
+dir=/root/tools/ansible
+
+[ -e "${dir}" ] || mkdir -p "${dir}"
+
+cd  "${dir}" || exit 1
+
+hostname  > hosts
+if [[ $# == 1 ]] ; then
+	opt=$1
+fi
+if [[ "${opt}" == '-l'  ]] ; then
+   cd "${dir}/${prj}" || exit 2	
+   ansible-playbook -i localhost, -c local  "$(hostname).yml"
+else
+   ansible-pull -i "${dir}/hosts"  -C main -U "${UREP}"
+fi
+
+exit 0

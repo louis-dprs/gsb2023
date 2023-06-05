@@ -1,0 +1,68 @@
+# -*- shell-script -*-
+#
+# Ferm script r-vp2
+
+@def $DEV_PRIVATE = enp0s9;
+@def $DEV_WORLD = enp0s8;
+@def $DEV_VPN= wg0;
+@def $NET_PRIVATE = 172.16.0.0/24;
+
+table filter {
+    chain (INPUT OUTPUT){
+        # allow VPN
+	proto udp dport 51820 ACCEPT;
+}
+    chain INPUT {
+        policy DROP;
+
+        # connection tracking
+        mod state state INVALID DROP;
+        mod state state (ESTABLISHED RELATED) ACCEPT;
+
+        # allow local connections
+        interface lo ACCEPT;
+
+        # respond to ping
+        proto icmp icmp-type echo-request ACCEPT;
+
+        # allow SSH connections from the private network and from some
+        # well-known internet hosts
+        saddr ($NET_PRIVATE) proto tcp dport ssh ACCEPT;
+
+        # we provide DNS and SMTP services for the internal net
+        interface $DEV_PRIVATE saddr $NET_PRIVATE {
+            proto (udp tcp) dport domain ACCEPT;
+            proto udp dport bootps ACCEPT;
+        }
+
+
+        # interface réseau
+        interface $DEV_WORLD {
+
+        }
+
+        # the rest is dropped by the above policy
+    }#FIN INPUT
+
+    # outgoing connections are not limited
+    chain OUTPUT {
+	policy ACCEPT;
+}
+    chain FORWARD {
+        policy ACCEPT;
+
+	proto icmp icmp-type echo-request ACCEPT;
+        # connection tracking
+        mod state state INVALID DROP;
+        mod state state (ESTABLISHED RELATED) ACCEPT;
+
+        # connections from the internal net to the internet or to other
+        # internal nets are allowed
+        interface $DEV_PRIVATE ACCEPT;
+
+	interface $DEV_VPN daddr $NET_PRIVATE {
+	proto tcp dport ssh DROP;
+	}
+        # the rest is dropped by the above policy
+    }
+}

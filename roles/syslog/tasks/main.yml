@@ -1,0 +1,26 @@
+---
+- name: chargement module UDP 
+  replace:
+    dest: /etc/rsyslog.conf
+    regexp: '^#module\(load="imudp"\)'
+    replace: 'module(load="imudp")' 
+    backup: yes 
+  notify: 
+    - restart syslog
+
+- name: ecoute UDP port 514
+  replace:
+    dest: /etc/rsyslog.conf
+    regexp: '^#input\(type="imudp" port="514"\)'
+    replace: 'input(type="imudp" port="514")' 
+    backup: yes 
+  notify: 
+    - restart syslog 
+
+- name: chargement module UDP dans rsyslog.conf 
+  replace:
+    dest: /etc/systemd/journald.conf
+    regexp: '^#ForwardToSyslog=yes'
+    replace: 'ForwardToSyslog=yes'
+  notify:
+    - restart syslog

@@ -1,0 +1,29 @@
+---
+- name: Installation d'HAproxy
+  apt:
+    name:
+    - haproxy
+    state: present
+
+- name: Copie du fichier de configuration
+  copy: 
+    src: haproxy.cfg 
+    dest: /etc/haproxy/haproxy.cfg
+  notify:
+    - restart haproxy
+
+- name:
+  file:
+    path: /root/script
+    state: directory
+
+- name: Copie du fichier actu.sh
+  copy: 
+    src: actu.sh
+    dest: /root/script/
+
+- name: On rend exécutable le script actu.sh
+  file:
+    path: /root/script/actu.sh
+    mode: 0777
+

@@ -1,0 +1,63 @@
+file:
+  /etc/nagios4/htdigest.users:
+    exists: true
+    mode: "0640"
+    owner: nagios
+    group: www-data
+    filetype: file
+    contains: [nagiosadmin]
+package:
+  apache2:
+    installed: true
+  nagios-snmp-plugins:
+    installed: true
+  nagios4:
+    installed: true
+  snmp:
+    installed: true
+  python3-passlib:
+    installed: true
+port:
+  tcp:80:
+    listening: true
+    ip:
+    - 0.0.0.0
+  udp:514:
+    listening: true
+    ip:
+    - 0.0.0.0
+service:
+  apache2:
+    enabled: true
+    running: true
+  nagios4:
+    enabled: true
+    running: true
+command:
+  sysctl net.ipv4.ip_forward:
+    exit-status: 0
+    stdout:
+    - net.ipv4.ip_forward = 0
+    stderr: []
+    timeout: 10000
+process:
+  apache2:
+    running: true
+  nagios4:
+    running: true
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.8/24
+  enp0s8:
+    exists: true
+    addrs:
+    - 172.16.0.8/24
+http:
+  http://localhost/nagios4:
+    status: 401
+    allow-insecure: false
+    no-follow-redirects: false
+    timeout: 5000
+    body: []

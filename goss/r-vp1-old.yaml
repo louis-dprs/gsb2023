@@ -1,0 +1,106 @@
+file:
+  /etc/ipsec.d/cacerts/strongswanCert.pem:
+    exists: true
+    mode: "0644"
+    size: 1834
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/ipsec.d/certs/r-vp1Cert.pem:
+    exists: true
+    mode: "0644"
+    size: 1509
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/ipsec.d/certs/r-vp2Cert.pem:
+    exists: true
+    mode: "0644"
+    size: 1509
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/ipsec.d/private/r-vp1Key.pem:
+    exists: true
+    mode: "0600"
+    size: 1675
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/ipsec.d/private/r-vp2Key.pem:
+    exists: true
+    mode: "0600"
+    size: 1679
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+package:
+  strongswan:
+    installed: true
+    versions:
+    - 5.2.1-6+deb8u2
+service:
+  strongswan:
+    enabled: true
+    running: true
+user:
+  strongswan:
+    exists: true
+    uid: 112
+    gid: 65534
+    groups:
+    - nogroup
+    home: /var/lib/strongswan
+    shell: /usr/sbin/nologin
+command:
+  Associations:
+    exit-status: 127
+    stdout: []
+    stderr:
+    - 'sh: 1: Associations: not found'
+    timeout: 10000
+  ip r|grep default:
+    exit-status: 0
+    stdout:
+    - default via 192.168.1.1 dev enp0s9
+    stderr: []
+    timeout: 10000
+  ipsec  listcacerts|grep subject:
+    exit-status: 0
+    stdout:
+    - 'subject:  "C=CH, O=GSB, CN=Root CA"'
+    stderr: []
+    timeout: 10000
+  ipsec  listcerts|grep subject:
+    exit-status: 0
+    stdout:
+    - 'subject:  "C=CH, O=GSB, CN=r-vp1"'
+    - 'subject:  "C=CH, O=GSB, CN=r-vp2"'
+    stderr: []
+    timeout: 10000
+  ipsec statusall|grep Security:
+    exit-status: 0
+    stdout:
+    - 'Security Associations (1 up, 0 connecting):'
+    stderr: []
+    timeout: 10000
+  sysctl net.ipv4.ip_forward:
+    exit-status: 0
+    stdout:
+    - net.ipv4.ip_forward = 1
+    stderr: []
+    timeout: 10000
+interface:
+  enp0s8:
+    exists: true
+    addrs:
+    - 192.168.0.51/24
+  enp0s9:
+    exists: true
+    addrs:
+    - 192.168.1.2/24

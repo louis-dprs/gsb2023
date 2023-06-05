@@ -1,0 +1,48 @@
+---
+
+- name: Installation bind9
+  apt:
+    name: bind9
+    state: present
+    update_cache: yes
+
+- name: Copie named.conf.options
+  copy:
+    src: named.conf.options
+    dest: /etc/bind
+  notify:
+    - restart bind9
+
+- name: Copie named.conf.local
+  copy:
+    src: named.conf.local
+    dest: /etc/bind
+  notify:
+    - restart bind9
+
+- name: Copie fichier zone directe db.gsb.lan
+  copy:
+    src: db.gsb.lan
+    dest: /etc/bind
+  notify:
+    - restart bind9
+
+- name: Copie fichier zone inverse db.gsb.lan.rev
+  copy:
+    src: db.gsb.lan.rev
+    dest: /etc/bind
+  notify:
+    - restart bind9
+
+- name: Copie resolv.conf
+  copy:
+    src: resolv.conf
+    dest: /etc
+  notify:
+    - restart bind9
+
+- name: Copie page squidguard
+  copy:
+    src: forbidden.html
+    dest: /var/www/
+

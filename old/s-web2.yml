@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - s-lb-web
+    - snmp-agent
+    - s-nas-client
+    - post
+

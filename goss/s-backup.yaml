@@ -1,0 +1,41 @@
+package:
+  bind9:
+    installed: true
+  cifs-utils:
+    installed: true
+  rsync:
+    installed: true
+  smbclient:
+    installed: true
+service:
+  bind9:
+    enabled: true
+    running: true
+  rsync:
+    enabled: true
+    running: false
+command:
+  ping -c4 ns.gsb.lan:
+    exit-status: 0
+    stdout:
+    - 0% packet loss
+    stderr: []
+    timeout: 10000
+#check si partage windows accesible
+  smbclient -L //s-win --user=uBackup%Azerty1+ | grep 'public':
+    exit-status: 0
+    stdout:
+    - public
+    stderr: []
+    timeout: 10000
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.4/24
+    mtu: 1500
+  enp0s8:
+    exists: true
+    addrs:
+    - 172.16.0.4/24
+    mtu: 1500

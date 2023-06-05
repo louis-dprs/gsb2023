@@ -1,0 +1,23 @@
+---
+- name: Récupération de filebeat
+  get_url:
+    url: http://s-adm.gsb.adm/gsbstore/filebeat-${BEATVAR}-amd64.deb
+    dest: /tmp/
+
+- name: Installation de filebeat
+  apt:
+    deb: /tmp/filebeat-${BEATVEAR}-amd64.deb
+
+- name: Changement du fichier de conf
+  copy:
+    src: filebeat.yml
+    dest: /etc/filebeat/filebeat.yml
+
+- name: Configuration de filebeat
+  shell: filebeat modules enable system  
+  notify: restart filebeat
+ 
+- name: Lancement de la configuration de filebeat
+  shell: filebeat setup -e
+  notify: restart filebeat
+

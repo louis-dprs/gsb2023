@@ -1,0 +1,23 @@
+- name: installation rsync et smbclient
+  apt:
+    name:
+      - rsync
+      - smbclient
+      - cifs-utils
+    state: present
+
+- name: copie script backupsmb dans /usr/local/bin
+  copy:
+    src: backupsmb.sh
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: crontab backupsmb ( commentee par defaut )
+  cron:
+    name: backupsmb
+    disabled: true
+    minute: "0"
+    hour: "5"
+    job: "/usr/local/bin/backupsmb.sh"

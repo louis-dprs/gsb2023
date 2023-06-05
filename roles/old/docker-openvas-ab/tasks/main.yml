@@ -1,0 +1,77 @@
+---
+- name: Installation de apt-transport-https
+  apt: name=apt-transport-https state=present
+
+- name: Installation de ca-certificates
+  apt: name=ca-certificates state=present
+
+- name: Installation de gnupg2
+  apt: name=gnupg2 state=present
+
+- name: Installation de software-properties-common
+  apt: name=software-properties-common state=present
+
+- name: Installation de sudo
+  apt: name=sudo state=present
+
+- name: Installation de docker
+  shell: export https_proxy=http://192.168.99.99:8080  && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+
+- name: Récupération des paquets docker-ce et docker-compose
+  shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+
+- name: Création du répertoire docker.service.d
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+    recurse: yes
+
+- name: Copie https_proxy.conf
+  copy: src=https_proxy.conf dest=/etc/systemd/system/docker.service.d/
+  notify:
+    - restart docker
+
+- name: Vérification des nouveaux paquets
+  shell: sudo apt-get update
+
+- name: Installation de docker-ce
+  shell: sudo apt-get install -y docker-ce
+
+- name: Installation de docker-compose
+  shell: export https_proxy=http://192.168.99.99:8080 && curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+- name: Modification des droits de docker-compose
+  shell: chmod +x /usr/local/bin/docker-compose
+
+- name: Création du docker portainer_data
+  shell: docker volume create portainer_data
+
+- name: Initialisation de portainer
+  shell: docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+
+- name: Copie du fichier fstab
+  copy: src=fstab dest=/etc/
+
+- name: Changement du système de fichier de /dev/sdb1 en ext4
+  shell: mkfs.ext4 /dev/sdb1
+
+- name: Montage /dev/sdb1 sur /var/lib/docker
+  shell: mount /dev/sdb1 /var/lib/docker
+
+- name: Installation d'OpenVAS
+  debug: msg="Exécuter la commande suivante pour mettre en place openvas > docker run -d -p 443:443 -e PUBLIC_HOSTNAME=172.16.0.19 --name openvas mikesplain/openvas puis redémarrer docker avec service docker restart"
+
+  #- name: Installation d'IredMail
+  #debug: msg="Exécuter la commande suivante pour mettre en place openvas > docker run -d -p 443:443 -e PUBLIC_HOSTNAME=172.16.0.19 --name iredmail lejmr/iredmail puis redémarrer docker avec service docker restart"
+
+- name: Montage /dev/sdb1
+  debug: msg="Pour vérifier que /dev/sdb1 est bien monté sur le répertoire /var/lib/docker, utiliser la commande df -h"
+
+- name: Test docker
+  debug: msg="Effectuer la commande docker run hello-world pour vérifier l'installation de docker-ce et effectuer la commande docker-compose --version pour vérifier que la version est bien la 1.23.1"
+
+- name: Démarrer le container
+  debug: msg="Pour démarrer le container openvas, utiliser la commande docker start nom_du_container_ (/var/lib/docker/containers), accéder à la page via l'adresse https://172.16.0.19:443"

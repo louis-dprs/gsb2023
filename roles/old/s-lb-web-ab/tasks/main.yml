@@ -1,0 +1,26 @@
+---
+- name: Install apache2 php php5-mysql et autres modules php
+  apt:
+    name:
+    - apache2
+    - php
+    - php-mysql
+    - php-gd
+    - php-zip
+    - php-mbstring
+    - php-curl
+    - php-imagick
+    - php-xml
+    state: present
+
+- name: copie exports pour partage nfs wordpress
+  copy: src=compter.bash dest=/root
+
+- name: Changement de permission pour compter.bash
+  shell: chmod a+x /root/compter.bash
+
+#- name: Envoi d'index dans /var/www/
+#  copy: src=index.html dest=/var/www/
+
+#- name: Install glusterfs client
+#  apt: pkg=glusterfs-client state=present update_cache=yes

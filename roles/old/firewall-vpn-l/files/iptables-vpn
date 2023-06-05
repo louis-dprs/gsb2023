@@ -1,0 +1,58 @@
+#!/bin/bash
+
+#renommage des interfaces
+IFPUB=enp0s9
+IFINT=enp0s8
+
+iptables -F
+#iptables -F -t nat
+
+#bloquer tout
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD ACCEPT
+
+iptables -A INPUT -i lo
+iptables -A OUTPUT -o lo
+
+#autorise l'acces SSH
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+
+#Autorise les requete DNS en tant que client
+iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
+iptables -A INPUT -p udp --sport 53 -j ACCEPT
+iptables -A INPUT -p udp --dport 53 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 53 -j ACCEPT
+
+#autorise isakmp
+iptables -A OUTPUT -p udp --dport 500 -j ACCEPT
+iptables -A INPUT -p udp --sport 500 -j ACCEPT
+iptables -A INPUT -p udp --dport 500 -j ACCEPT
+iptables -A OUTPUT  -p udp --sport 500 -j ACCEPT
+
+#autorise nat-t-ike
+iptables -A OUTPUT -p udp --dport 4500 -j ACCEPT
+iptables -A INPUT -p udp --sport 4500 -j ACCEPT
+iptables -A INPUT -p udp --dport 5500 -j ACCEPT
+iptables -A OUTPUT  -p udp --sport 4500 -j ACCEPT
+
+
+# allow IPsec IKE negotiations
+#iptables -I INPUT  -p udp --sport 500 --dport 500 -j ACCEPT
+#iptables -I OUTPUT -p udp --sport 500 --dport 500 -j ACCEPT
+# ESP encryption and authentication
+iptables -I INPUT  -p 50 -j ACCEPT
+iptables -I OUTPUT -p 50 -j ACCEPT
+
+#autorise la supervision ( SNMP )
+iptables -A OUTPUT -p udp --dport 161 -j ACCEPT
+iptables -A INPUT -p udp --sport 161 -j ACCEPT
+
+#autorise NTP
+iptables -A OUTPUT -p udp --dport 123 -j ACCEPT
+iptables -A INPUT -p udp --sport 123 -j ACCEPT
+
+#autoriser les ping sauf de l'exterieur
+iptables -A INPUT -p icmp -m limit --limit 30/minute -j ACCEPT
+iptables -A OUTPUT -p icmp -j ACCEPT

@@ -1,0 +1,35 @@
+service:
+  mariadb:
+    enabled: true
+    running: true
+
+  apache2:
+    enabled: true
+    running: true
+
+file:
+  /var/www/html/wordpress:
+    exists: true
+    owner: www-data
+    group: www-data
+    filetype: directory
+
+  /var/www/html/wordpress-5.8.2-fr_FR.tar.gz:
+    exists: true
+
+  /var/www/html/wordpress/wp-config-sample.php:
+    exists: true
+
+  /etc/apache2/sites-enabled/000-default.conf:
+    exists: true
+
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.3/24
+
+  enp0s8:
+    exists: true
+    addrs:
+    - 172.16.0.3/24

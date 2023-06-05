@@ -1,0 +1,7 @@
+- name: Activation acces ssh root pour r-vp1 (certificat)
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin yes"
+    state: present
+

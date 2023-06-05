@@ -1,0 +1,3 @@
+---
+  - name: fichier parefeu pour VPN
+    copy: src=iptables-vpn dest=/root/

@@ -1,0 +1,6 @@
+---
+  - name: redemarrage apache2
+    service:
+      name: apache2
+      state: restarted
+      enabled: yes

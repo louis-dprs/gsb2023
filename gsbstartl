@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+while ($_ = shift @ARGV) {
+	if ($_ eq "-a"){
+		qx(./gsbstart s-infra);
+		qx(./gsbstart s-spec);
+		qx(./gsbstart s-proxy);
+                qx(./gsbstart s-mon);
+                qx(./gsbstart s-mess);
+                qx(./gsbstart s-itil);
+                qx(./gsbstart s-backup);
+                qx(./gsbstart s-appli);
+                qx(./gsbstart r-vp1);
+                qx(./gsbstart r-vp2);
+                qx(./gsbstart r-int);
+                qx(./gsbstart r-ext);
+                qx(./gsbstart s-lb);
+                qx(./gsbstart s-lb-web-1);
+                qx(./gsbstart s-lb-web-2);
+                qx(./gsbstart s-lb-bd);
+
+	}else{
+                qx(./gsbstart $_);
+	}	
+}

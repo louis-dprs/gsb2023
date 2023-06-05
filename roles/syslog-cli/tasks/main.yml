@@ -1,0 +1,17 @@
+---
+  - name: ajoute l'indication de serveur syslog distant si elle n'est pas presente 
+    lineinfile: 
+      path: /etc/rsyslog.conf 
+      regexp: '^' 
+      line: '*.* @syslog.gsb.adm' 
+      state: present  
+    notify: 
+    - restart rsyslog
+
+  - name: decommente le chargement du module imudp dans rsyslog.conf
+    replace:
+      path: /etc/systemd/journald.conf
+      regexp: '^#ForwardToSyslog=yes'
+      replace: 'ForwardToSyslog=yes'
+    notify:
+    - restart journald

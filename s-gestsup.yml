@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - gestsup
+    - postfix-gestsup
+    - ssh-cli
+    - syslog-cli
+    - snmp-agent
+    - post

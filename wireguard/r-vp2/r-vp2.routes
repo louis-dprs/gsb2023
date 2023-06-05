@@ -1,0 +1,7 @@
+10.0.0.1 dev wg0 scope link 
+169.254.0.0/16 dev enp0s9 scope link metric 1000 
+172.16.0.0/24 dev wg0 scope link 
+172.16.128.0/24 dev enp0s8 proto kernel scope link src 172.16.128.254 
+192.168.0.0/24 dev enp0s9 proto kernel scope link src 192.168.0.52 
+192.168.1.0/24 dev wg0 scope link 
+192.168.200.0/24 dev wg0 scope link 

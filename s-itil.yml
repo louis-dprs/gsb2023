@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  connection: local
+
+  vars:
+    glpi_version: "10.0.6"
+    glpi_dir: "/var/www/html/glpi"
+    glpi_dbhost: "127.0.0.1"
+    glpi_dbname: "glpi"
+    glpi_dbuser: "glpi"
+    glpi_dbpasswd: "glpi"
+
+  roles:
+    - base
+    - goss
+    - snmp-agent
+    - glpi
+    - ssh-cli
+    - syslog-cli
+    - post

@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+
+  roles:
+    - base
+    - goss
+    - lb-bd
+    - post
+    - snmp-agent
+    - ssh-cli

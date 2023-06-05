@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  #  include: config.yml
+  roles:
+    - base
+    - goss
+    - snmp-agent
+    - syslog-cli
+    - ssh-cli
+    - post
+

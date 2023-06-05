@@ -1,0 +1,9 @@
+---
+
+- name: Installation squid
+  apt:  name=squid state=present
+
+- name: Copie du fichier squid.conf
+  copy: src=squid.{{ansible_hostname}}.conf dest=/etc/squid/squid.conf
+  notify:
+    - restart squid 

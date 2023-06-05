@@ -1,0 +1,16 @@
+#!/bin/bash
+nom=s-adm
+
+VBoxManage modifyvm $nom --nic1 bridged
+VBoxManage modifyvm $nom --bridgeadapter1 "eno1"
+VBoxManage modifyvm $nom --nictype1 82540EM
+VBoxManage modifyvm $nom --cableconnected1 on
+VBoxManage modifyvm $nom --nicpromisc1 allow-all
+
+#(enp0s8)
+
+VBoxManage modifyvm $nom --nic2 intnet
+VBoxManage modifyvm $nom --intnet2 "n-adm"
+VBoxManage modifyvm $nom --nictype2 82540EM
+VBoxManage modifyvm $nom --cableconnected2 on
+VBoxManage modifyvm $nom --nicpromisc2 allow-all

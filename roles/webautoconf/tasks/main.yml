@@ -1,0 +1,9 @@
+---
+
+- name: Installation lighttpd
+  apt:  name=lighttpd state=present 
+
+- name: Copie wpad.dat
+  copy: src=wpad.dat dest=/var/www/html
+
+

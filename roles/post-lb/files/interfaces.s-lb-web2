@@ -1,0 +1,21 @@
+### 0.2 - putconf - jeudi 7 janvier 2016, 16:18:49 (UTC+0100)
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# carte n-adm
+allow-hotplug enp0s3
+iface enp0s3 inet static
+	address 192.168.99.101/24
+
+# Réseau n-dmz-lb
+allow-hotplug enp0s8
+iface enp0s8 inet static
+        address 192.168.101.1/24
+
+# réseau n-dmz-db
+allow-hotplug enp0s9
+iface enp0s9 inet static
+        address 192.168.102.1/24
+	post-up mount -o rw 192.168.102.253:/home/wordpress /var/www/html

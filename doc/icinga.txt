@@ -1,0 +1,3 @@
+Roles fait par Adnan Baljic, le 17/01/2019
+Installation de icinga, nagios3-plugins, copie des fichiers de configuration vers /etc/icinga/ (=commands.cfg, hostgroups.cfg) 
+et /etc/icinga/objects/ (=namevm.cfg, services_icinga.cfg, contacts_icinga.cfg)

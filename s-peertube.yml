@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - post
+    - snmp-agent
+    - ssh-cli
+    - peertube-k3s
+    - peertube

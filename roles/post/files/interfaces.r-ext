@@ -1,0 +1,38 @@
+### 0.2 - putconf - jeudi 7 janvier 2016, 16:18:49 (UTC+0100)
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# carte reseau admin
+allow-hotplug enp0s3
+iface enp0s3 inet static
+	address 192.168.99.13
+	netmask 255.255.255.0
+
+# Réseau DMZ
+allow-hotplug enp0s8
+iface enp0s8 inet static
+        address 192.168.100.254
+        netmask 255.255.255.0
+
+# carte en bridge
+allow-hotplug enp0s9
+iface enp0s9 inet dhcp
+       up /root/nat.sh
+
+# Réseau VPN
+allow-hotplug enp0s10
+iface enp0s10 inet static
+        address 192.168.1.1
+        netmask 255.255.255.0
+        up ip route add 172.16.128.0/24 via 192.168.1.2
+
+
+# Réseau liaison entre routeur
+allow-hotplug enp0s16
+iface enp0s16 inet static
+        address 192.168.200.253
+        netmask 255.255.255.0
+	up ip route add 172.16.0.0/24 via 192.168.200.254
+	up ip route add 172.16.64.0/24 via 192.168.200.254

@@ -1,0 +1,36 @@
+---
+#Installation ipsec strongswan côté droit pour la communication via certificat
+  - name: install strongswan, com via certificat
+    apt: name=strongswan state=present
+  
+  - name: install strongswan-pki
+    apt: name=strongswan-pki state=present
+
+  - name: install tcpdump
+    apt: name=tcpdump state=present update_cache=yes
+
+  - name: activation du routage
+    copy: src=sysctl.conf dest=/etc/sysctl.conf
+
+  - name: Copie fichier ipsec.conf
+    copy: src=ipsec.conf dest=/etc/ipsec.conf
+    notify: restart ipsec
+
+  - name: Copie fichier ipsec.secrets
+    copy: src=ipsec.secrets dest=/etc/ipsec.secrets
+    notify: restart ipsec
+
+  - name: Copie fichier generate.sh
+    copy: src=generate.sh dest=/root/
+
+  - name: Generation de la CA et des certificats
+    shell: /bin/bash /root/generate.sh >> generate-log.txt
+
+  - name: Copie fichier recupKey.sh
+    copy: src=recupKey.sh dest=/root/
+
+  - name: Lancement recupKey.sh
+    shell: /bin/bash /root/recupKey.sh
+  
+  - name: Message d'information
+    debug: msg="Veuillez consulter le document "r-vp.txt" dans ansible/gsb/doc"

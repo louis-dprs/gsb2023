@@ -1,0 +1,14 @@
+lisezmoi.txt
+------------
+
+Ce document décrit les divers élements du projet GSB du BTS SIO utilisé pour l'Epreuve E4
+
+
+Le projet GSB décrit les diférents playbooks permttant d'installer les
+machines du projet GSB
+
+Les répertoires : 
+
+- roles : les roles
+- goss : les outils de test
+

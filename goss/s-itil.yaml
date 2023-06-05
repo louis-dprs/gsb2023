@@ -1,0 +1,36 @@
+file:
+  /var/www/html/glpi:
+    exists: true
+    mode: "0755"
+    owner: www-data
+    group: www-data
+    filetype: directory
+
+  /var/www/html/ficlients:
+    exists: true
+    mode: "0775"
+    owner: www-data
+    group: www-data
+    filetype: directory
+
+  /var/www/html/glpi/plugins:
+    exists: true
+    mode: "0777"
+    filetype: directory
+
+  /var/www/html/index.nginx-debian.html:
+    exists: true
+    mode: "0775"
+    owner: www-data
+    group: www-data
+    filetype: file
+
+service:
+  mariadb:
+    enabled: true
+    running: true
+
+  nginx:
+    enabled: true
+    running: true
+

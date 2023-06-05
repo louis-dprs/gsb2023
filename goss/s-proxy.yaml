@@ -1,0 +1,30 @@
+package:
+  squid:
+    installed: true
+port:
+  tcp:8080:
+    listening: true
+    ip:
+    - '0.0.0.0'
+service:
+  squid:
+    enabled: true
+    running: true
+command:
+  host 172.16.0.2:
+    exit-status: 0
+    stdout:
+    - 2.0.16.172.in-addr.arpa domain name pointer s-proxy.gsb.lan.
+    stderr: []
+    timeout: 10000
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.2/24
+    mtu: 1500
+  enp0s8:
+    exists: true
+    addrs:
+    - 172.16.0.2/24
+    mtu: 1500

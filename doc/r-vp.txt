@@ -1,0 +1,23 @@
+Fichier de documentation fait par Adnan Baljic, le 24/01/2019
+
+Manipulation à faire pour la mise en place de r-vp1 et r-vp2:
+Après exécution de gsbboot et du pull-config, il faudra désactiver l'interface 
+de n-adm pour éviter une boucle. Pour cela, il suffit de faire "ifdown enp0sx"
+
+Pour ce qui est des tests pour vérifier que l'agence passe bien par le tunnel 
+chiffré, vous pouvez stopper le service ipsec ou strongswan ("service 
+strongswan stop" ou "service ipsec stop", cela revient à faire la même chose)
+
+Important: sur r-vp2, si la route par défaut est celui de s-adm, veuillez 
+supprimer cette route en faisant "route del default" sinon l'agence ne passera
+pas par le tunnel chiffré mais vers s-adm 
+cf. Schéma GSB/E4 - VPN/Infra - Version 1.2 - 2019-01-23
+
+La mise en place de strongswan via les certificats se fait via le playbook
+r-vpx-x509.yml. La manipulation ci-dessus n'est pas à faire pour les vpn avec
+certificat si r-vp2-x509 et r-vp1-x509 n'ont pas de route par défaut. Si ils ont
+une route par défaut, veuillez effectuer la même manipulation que pour r-vp2.
+Il faudra tout de même désactiver l'interface de n-adm sur les 2 r-vpx-x509.
+
+Les tests effectués:
+Jeudi 24 janvier 2019, 14:45 par Adnan Baljic= TEST OK

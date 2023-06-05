@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - syslog-cli
+    - post
+    - db-user

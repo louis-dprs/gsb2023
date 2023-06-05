@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - s-ssh
+    - dnsmasq
+    - squid
+#    - local-store
+    - snmp-agent
+    - syslog-cli
+    - post
+#    - goss

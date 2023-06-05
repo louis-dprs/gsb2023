@@ -1,0 +1,19 @@
+---
+- name: goss binary exists
+  stat: path=/usr/local/bin/goss
+  register: gossbin
+
+- name: install goss sur machine standard
+  get_url:
+    url: "{{ depl_url }}/{{ depl_goss }}"
+    dest: /usr/local/bin/{{ depl_goss }}
+    mode: 0755
+  when: gossbin.stat.exists == false and ansible_hostname != "s-adm"
+
+- name: install goss sur s-adm
+  copy:
+    src: "/var/www/html/gsbstore/{{ depl_goss }}"
+    dest: /usr/local/bin/{{ depl_goss }}
+    mode: 0755
+    remote_src: yes
+  when: gossbin.stat.exists == false and ansible_hostname == "s-adm"

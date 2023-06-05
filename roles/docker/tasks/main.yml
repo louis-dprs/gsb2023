@@ -1,0 +1,16 @@
+---
+- name: Supprime le fichier getdocker.sh si déjà présent
+  file:
+    state: absent
+    path: /tmp/getdocker.sh
+
+- name: Télécharge le script d'installation de docker
+  uri:
+    url: 'https://get.docker.com'
+    method: GET
+    dest: /tmp/getdocker.sh
+    mode: a+x
+  register: result
+
+- name: Execution du script getdocker
+  shell: bash /tmp/getdocker.sh

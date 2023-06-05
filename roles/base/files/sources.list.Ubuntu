@@ -1,0 +1,13 @@
+#------------------------------------------------------------------------------#
+#                            OFFICIAL UBUNTU REPOS                             #
+#------------------------------------------------------------------------------#
+
+
+###### Ubuntu Main Repos
+deb http://fr.archive.ubuntu.com/ubuntu/ wily main restricted universe 
+
+###### Ubuntu Update Repos
+deb http://fr.archive.ubuntu.com/ubuntu/ wily-security main restricted universe 
+deb http://fr.archive.ubuntu.com/ubuntu/ wily-updates main restricted universe 
+
+

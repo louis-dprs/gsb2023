@@ -1,0 +1,27 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# cote N-adm
+allow-hotplug enp0s3
+iface enp0s3 inet static
+	address 192.168.99.100
+	netmask 255.255.255.0
+
+# cote N-dmz
+allow-hotplug enp0s8
+iface enp0s8 inet static
+	address 192.168.100.10
+	netmask 255.255.255.0
+	gateway 192.168.100.254
+	up ip route add 192.168.200.0/24 via 192.168.100.254
+	up ip route add 172.16.0.0/24 via 192.168.100.254
+
+# cote N-dmz-lb
+allow-hotplug enp0s9
+iface enp0s9 inet static
+	address 192.168.101.100
+	netmask 255.255.255.0

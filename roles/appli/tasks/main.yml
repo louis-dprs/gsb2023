@@ -1,0 +1,72 @@
+
+---
+- name: Installation des packets
+  apt:
+    state: present
+    name:
+    - php
+    - php-fpm
+    - php-mbstring
+    - php-ssh2
+    - php-gd
+    - php-mysql
+    - python3-mysqldb
+    - libapache2-mod-php
+    - mariadb-server
+    - apache2 
+    - python3
+
+- name: Création du répertoire pour wordpress
+  file:
+    path: /var/www/html/wordpress
+    state: directory
+
+- name: Téléchargement de wordpress
+  get_url:
+    url: http://s-adm.gsb.adm/gsbstore/wordpress-5.8.2-fr_FR.tar.gz
+    dest: /var/www/html
+
+- name: Extraction du fichier wordpress
+  unarchive:
+    src: /var/www/html/wordpress-5.8.2-fr_FR.tar.gz
+    dest: /var/www/html
+
+- name: Fix permissions owner
+  shell: chown -R www-data /var/www/html/wordpress
+
+- name: Fix permissions groups
+  shell: chgrp -R www-data /var/www/html/wordpress
+
+- name: Mettre à jour le site Apache par défaut
+  lineinfile:
+    dest: /etc/apache2/sites-enabled/000-default.conf
+    regexp: "(.)+DocumentRoot /var/www/html"
+    line: "DocumentRoot /var/www/html/wordpress"
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted
+
+- name: Mettre à jour le fichier de configuration WordPress
+  lineinfile:
+    dest: /var/www/html/wordpress/wp-config-sample.php
+    backup: yes
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', 'wordpress');"}
+    - {'regexp': "define\\('DB_HOST', '(.)+'\\);", 'line': "define('DB_HOST', 'localhost');"}
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', 'wp');"}
+    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', 'wp');"}
+
+- name: Création de la base de donnée mysql
+  mysql_db:
+    name: wordpress
+    state: present
+
+- name: Création de l'utilisateur mysql
+  mysql_user:
+    name: wordpress
+    password: wp
+    priv: "*.*:ALL"

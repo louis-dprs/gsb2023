@@ -1,0 +1,15 @@
+---
+- name: installation de ferm
+  apt:
+    name: ferm
+    state: present
+
+- name: copie du ferm.conf
+  copy:
+    src: ferm.conf.{{ ansible_hostname }}
+    dest: /etc/ferm/ferm.conf
+
+- name: redemarage service ferm
+  ansible.builtin.service:
+    name: ferm.service
+    state: restarted

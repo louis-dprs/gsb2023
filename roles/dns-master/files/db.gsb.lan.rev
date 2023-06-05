@@ -1,0 +1,31 @@
+; 0.2 - putconf - vendredi 12 avril 2013, 08:54:33 (UTC+0200)
+
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     s-infra.gsb.lan. root.s-infra.gsb.lan. (
+                        2023060100      ; Serial
+                        7200            ; Refresh
+                        86400           ; Retry
+                        8419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+@         IN      NS      s-infra.gsb.lan.
+@         IN      NS      s-backup.gsb.lan.
+1.0       IN      PTR     s-infra.gsb.lan.
+4.0       IN      PTR     s-backup.gsb.lan.
+2.0       IN      PTR     s-proxy.gsb.lan.
+3.0       IN      PTR     s-appli.gsb.lan.
+6.0       IN      PTR     s-win.gsb.lan.
+7.0       IN      PTR     s-nxc.gsb.lan.
+8.0       IN      PTR     s-mon.gsb.lan.
+9.0	  IN	  PTR	  s-itil.gsb.lan.
+101.1     IN      PTR     s-web1
+101.2     IN      PTR     s-web2
+100.10   IN      PTR      s-lb
+100.10   IN      PTR      s-lb.gsb.lan
+11.0	  IN	  PTR	  s-elk.gsb.lan.
+12.0	  IN	  PTR	  s-webcom.gsb.lan.
+17.0	  IN	  PTR	  s-gestsup.lan
+254.0     IN      PTR     r-int.gsb.lan.

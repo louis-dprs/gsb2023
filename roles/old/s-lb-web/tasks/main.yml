@@ -1,0 +1,12 @@
+---
+- name: Installation des paquets
+  apt: 
+    name :
+    - apache2 
+    - php
+    - php-mysql
+    state: present
+
+
+
+

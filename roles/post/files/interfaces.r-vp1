@@ -1,0 +1,31 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+# The loopback network interface
+#auto lo
+#iface lo inet loopback
+
+#cote N-adm
+allow-hotplug enp0s3
+iface enp0s3 inet static
+	address 192.168.99.112
+	netmask 255.255.255.0
+
+# réseaux interne n-linkv
+allow-hotplug enp0s8
+iface enp0s8 inet static
+	address 192.168.1.2
+	netmask 255.255.255.0
+
+# accés par pont et entre vpn
+allow-hotplug enp0s9
+iface enp0s9 inet static
+	address 192.168.0.51
+	netmask 255.255.255.0
+	up ip route add 192.168.200.0/24 via 192.168.1.1
+	up ip route add 172.16.0.0/24 via 192.168.1.1
+#	up ip route add 192.168.0.0/24 via 192.168.0.51
+#	up ip route add 192.168.1.0/24 via 192.168.1.2
+#	up route add -net 172.16.128.0/24 gw 192.168.0.52
+#	up route add default gw 192.168.1.1
+#	post-up /bin/bash /root/iptables-vpn
+#	post-up /etc/init.d/ipsec restart

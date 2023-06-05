@@ -1,0 +1,87 @@
+- name: Installation de postfix et de mailutils
+  tags: install postfix
+  apt:
+    name:
+      - postfix
+      - mailutils
+      - libsasl2-modules
+    state: latest
+
+- name: Copie du fichier sasl_passwd
+  tags: sasl_passwd
+  copy:
+    src: sasl_passwd
+    dest: /etc/postfix/sasl/
+
+- name: ajout relay host gmail
+  tags: postfix
+  replace:
+    path: /etc/postfix/main.cf
+    regexp: '^relayhost ='
+    replace: 'relayhost = [smtp.gmail.com]:587'
+  notify: restart postfix
+
+- name: ajout lignes conf postfix
+  tags: postfix
+  blockinfile:
+    path: /etc/postfix/main.cf
+    block: |
+      #TLS 
+      smtp_use_tls = yes
+      #SASL
+      smtp_sasl_auth_enable = yes
+      #pas d auth anonyme
+      smtp_sasl_security_options = noanonymous
+      #chemin sasl_passwd
+      smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd
+      #chemin certificats CA
+      smtp_tls_CAfile = /etc/postfix/cacert.pem
+  notify: restart postfix
+
+#- name: Copie du fichier main.cf
+#  tags: main.cf
+#  template:
+#    src: main.cf.j2
+#    dest: /etc/postfix.main.cf
+
+
+- name: Commande postmap identifiants
+  tags: postmap
+  command: postmap /etc/postfix/sasl/sasl_passwd
+  notify: restart postfix
+
+- name: Ensure directory exists for local self-signed TLS certs.
+  file:
+    path: /etc/ssl/certs/postfix
+    state: directory
+
+- name: Generate an OpenSSL private key
+  community.crypto.openssl_privatekey:
+    path: /etc/ssl/certs/postfix/privkey.pem
+
+- name: Generate an OpenSSL CSR
+  community.crypto.openssl_csr:
+    path: /etc/ssl/certs/postfix/postfix.csr
+    privatekey_path: /etc/ssl/certs/postfix/privkey.pem
+    common_name: "GSB2023.LAN"
+
+- name: Generate a Self Signed OpenSSL certificate.
+  community.crypto.x509_certificate:
+    path: /etc/ssl/certs/postfix/fullchain.pem
+    privatekey_path: /etc/ssl/certs/postfix/privkey.pem
+    csr_path: /etc/ssl/certs/postfix/postfix.csr
+    provider: selfsigned
+
+- name: Copy certificate preserve owner and permissions to be used with postfix
+  copy:
+    remote_src: true
+    src: /etc/ssl/certs/postfix/fullchain.pem
+    dest: /etc/postfix/cacert.pem
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart postfix
+
+- name: message d'information pour gmail
+  tags: msg2
+  debug: msg="Il faut activer les applications moins sécurisées sur le compte google"

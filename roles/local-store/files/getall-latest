@@ -1,0 +1,26 @@
+#!/bin/bash
+#GLPIREL=9.5.3
+GLPIREL=10.0.5
+wget -nc https://github.com/glpi-project/glpi/releases/download/${GLPIREL}/glpi-${GLPIREL}.tgz
+ 
+FIREL=9.5+1.0
+#wget -nc https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi${FIREL}/fusioninventory-${FIREL}.tar.gz
+#https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi9.5.0%2B1.0/fusioninventory-9.5.0+1.0.tar.bz2
+wget -nc https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi9.5.0%2B1.0/fusioninventory-9.5.0+1.0.tar.bz2
+
+FIAGREL=2.6 
+wget -nc https://github.com/fusioninventory/fusioninventory-agent/releases/download/${FIAGREL}/fusioninventory-agent_windows-x64_${FIAGREL}.exe
+ 
+wget -nc https://github.com/fusioninventory/fusioninventory-agent/releases/download/${FIAGREL}/fusioninventory-agent_windows-x86_${FIAGREL}.exe
+ 
+FOGREL=1.5.9
+wget -nc https://github.com/FOGProject/fogproject/archive/${FOGREL}.tar.gz -O fogproject-${FOGREL}.tar.gz
+#https://github.com/FOGProject/fogproject/archive/1.5.9.tar.gz
+
+#wget -nc https://fr.wordpress.org/wordpress-5.3.2-fr_FR.tar.gz
+wget -nc https://fr.wordpress.org/wordpress-5.6-fr_FR.tar.gz
+
+GOSSVER=v0.3.16
+curl -L https://github.com/aelsabbahy/goss/releases/download/${GOSSVER}/goss-linux-amd64 -o goss
+chmod +x goss 
+

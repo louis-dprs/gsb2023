@@ -1,0 +1,41 @@
+#!/bin/bash
+nom=r-int
+
+# N-adm (enp0s3)
+
+VBoxManage modifyvm $nom --nic1 intnet
+VBoxManage modifyvm $nom --intnet1 "n-adm"
+VBoxManage modifyvm $nom --nictype1 82540EM
+VBoxManage modifyvm $nom --cableconnected1 on
+VBoxManage modifyvm $nom --nicpromisc1 allow-all
+# N-link (enp0s8)
+
+VBoxManage modifyvm $nom --nic2 intnet
+VBoxManage modifyvm $nom --intnet2 "n-link"
+VBoxManage modifyvm $nom --nictype2 82540EM
+VBoxManage modifyvm $nom --cableconnected2 on
+VBoxManage modifyvm $nom --nicpromisc2 allow-all
+
+# N-wifi (enp0s9)
+
+VBoxManage modifyvm $nom --nic3 intnet
+VBoxManage modifyvm $nom --intnet3 "n-wifi"
+VBoxManage modifyvm $nom --nictype3 82540EM
+VBoxManage modifyvm $nom --cableconnected3 on
+VBoxManage modifyvm $nom --nicpromisc3 allow-all
+
+# N-user (enp0s10)
+
+VBoxManage modifyvm $nom --nic4 intnet
+VBoxManage modifyvm $nom --intnet4 "n-user"
+VBoxManage modifyvm $nom --nictype4 82540EM
+VBoxManage modifyvm $nom --cableconnected4 on
+VBoxManage modifyvm $nom --nicpromisc4 allow-all
+
+# N-infra (enp0s16)
+
+VBoxManage modifyvm $nom --nic5 intnet
+VBoxManage modifyvm $nom --intnet5 "n-infra"
+VBoxManage modifyvm $nom --nictype5 82540EM
+VBoxManage modifyvm $nom --cableconnected5 on
+VBoxManage modifyvm $nom --nicpromisc5 allow-all

@@ -1,0 +1,3 @@
+depl_url: "http://s-adm.gsb.adm/gsbstore"
+depl_fog: "fogproject-1.5.9.tar.gz"
+instructions: "Pour lancer l'installateur Fog, faites : 'bash /root/tools/fog/bin/installfog.sh'. Suivez ensuite les instructions" 

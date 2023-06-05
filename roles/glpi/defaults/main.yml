@@ -1,0 +1,6 @@
+depl_url: "http://s-adm.gsb.adm/gsbstore"
+#depl_glpi: "glpi-9.5.6.tgz"
+depl_glpi: "glpi-10.0.6.tgz"
+#depl_fusioninventory: "fusioninventory-9.5+3.0.tar.bz2"
+depl_glpi_agentx64: "GLPI-Agent-1.4-x64.msi"
+depl_glpi_agentx86: "GLPI-Agent-1.4-x86.msi"

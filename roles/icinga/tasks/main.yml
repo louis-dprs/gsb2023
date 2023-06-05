@@ -1,0 +1,124 @@
+---
+- name: Installation apache2 
+  apt: 
+    name: 
+    - apache2
+    - snmp
+    - icinga 
+    - nagios-snmp-plugins
+    - python3-passlib
+    state: present
+
+- name: Copie de fichier icinga.conf pour apache  
+  copy: src=icinga.conf dest=/etc/apache2/sites-enabled/
+  notify:
+    - restart icinga
+
+- name: Copier le fichier commands.cfg pour icinga
+  copy: src=commands.cfg dest=/etc/icinga/
+  notify:
+    - restart icinga
+
+- name: Commente la ligne qui pose problème dans nt.cfg
+  copy: src=nt.cfg dest=/etc/nagios-plugins/config/
+  notify:
+    - restart icinga
+
+- name: macro pour test hdd
+  replace: 
+    dest: /etc/icinga/icinga.cfg
+    regexp: 'keep_unknown_macros=0'
+    replace: 'keep_unknown_macros=1'
+    backup : yes
+  notify:
+    - restart icinga
+
+- name: python3 par defaut
+  alternatives:
+    link: /usr/bin/python
+    name: python
+    path: /usr/bin/python3
+    priority: 10
+    
+- name: Changement de mot de passe de icingaadmin
+  htpasswd:
+    path: /etc/icinga/htpasswd.users
+    name: icingaadmin
+    password: root
+    
+
+- name: Copie du fichier contact
+  copy: src=contacts_icinga.cfg dest=/etc/icinga/objects
+
+- name: Copie du fichier s-infra s-proxy s-adm r-int r-ext srv-2012 gwsio2 s-test hostgroup
+  synchronize:
+    src: cfg/
+    dest: /etc/icinga/objects
+  notify:
+    - restart icinga
+
+- name: attribution des droits dossier icinga
+  file:
+    path: /var/lib/icinga
+    owner: nagios
+    mode: 751
+    recurse: yes
+  notify:
+    - restart icinga
+
+- name: attribution des droits dossier icinga rw
+  file:
+    path: /var/lib/icinga/rw
+    owner: nagios
+    mode: 2710
+    recurse: yes
+  notify:
+    - restart icinga
+
+- name: activation des commandes externes
+  replace:
+    dest: /etc/icinga/icinga.cfg
+    regexp: 'check_external_commands=0'
+    replace: 'check_external_commands=1'
+  notify:
+    - restart icinga
+
+- name: reconfiguration des droits avec dpkg statoverride
+  shell: dpkg-statoverride --update --force-all --add nagios www-data 2710 /var/lib/icinga/rw
+
+- name: reconfiguration des droits avec dpkg statoverride
+  shell: dpkg-statoverride --update --force-all --add nagios nagios 751 /var/lib/icinga
+
+- name: suppression de checkresults
+  file:
+    path: /var/lib/icinga/spool/checkresults
+    state: absent
+
+- name: creation du dossier checkresults avec droits de lecture
+  file:
+    path: /var/lib/icinga/spool/checkresults
+    state: directory
+    owner: nagios     
+    group: root
+    mode: '755'
+
+      #- name: Changement droit notif
+      #  shell: chmod 644 /var/log/icinga/icinga.log
+
+
+#- name: copie dns.cfg
+#  copy: remote_src=true src=dns.cfg dest=/etc/nagios-plugins/config
+
+      #- name: copie check traffic
+      #  copy: src=check_iftraffic3.pl dest=/usr/lib/nagios/plugins
+
+      #- name: modif des droits plugin traffic
+      #  shell: chmod 755 /usr/lib/nagios/plugins/check_iftraffic3.pl
+
+- name: message d'information
+  debug: msg="Pour superviser le Windows, il faut installer NSClient++"
+
+- name: redemarrage apache 
+  service:
+    name: apache2
+    state: restarted

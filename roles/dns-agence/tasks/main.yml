@@ -1,0 +1,11 @@
+---
+
+- name: Installation bind9
+  apt:  name=bind9 state=present update_cache=yes
+
+- name: Copie named.conf.options
+  copy: src=named.conf.options dest=/etc/bind
+  notify:
+    - restart bind9
+
+

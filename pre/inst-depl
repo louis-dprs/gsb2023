@@ -1,0 +1,104 @@
+#!/bin/bash
+## aa : 2023-01-18 15:25
+## ps : 2023-02-01 15:25
+
+set -o errexit
+set -o pipefail
+GITUSR=gitgsb
+GITPRJ=gsb2023
+apt-get update 
+apt-get install -y apache2 git 
+STOREREP="/var/www/html/gsbstore" 
+
+GLPIREL=10.0.6
+str="wget -nc https://github.com/glpi-project/glpi/releases/download/${GLPIREL}/glpi-${GLPIREL}.tgz"
+
+
+#Fusion Inventory
+
+#FIREL=10.0.3+1.0
+#str2="https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi${FIREL}/fusioninventory-${FIREL}.tar.bz2"
+
+
+#GLPI Agent
+
+GLPIAGVER=1.4
+str31="wget -nc https://github.com/glpi-project/glpi-agent/releases/download/${GLPIAGVER}/GLPI-Agent-${GLPIAGVER}-x64.msi"
+
+str32="wget -nc https://github.com/glpi-project/glpi-agent/releases/download/${GLPIAGVER}/GLPI-Agent-${GLPIAGVER}-x86.msi"
+
+
+FOGREL=1.5.9
+str4="wget -nc https://github.com/FOGProject/fogproject/archive/${FOGREL}.tar.gz -O fogproject-${FOGREL}.tar.gz"
+
+WPREL=6.1.1
+#v6.1.1 le 17/01/2023
+str5="wget -nc https://fr.wordpress.org/latest-fr_FR.tar.gz -O wordpress-6.1.1-fr_FR.tar.gz"
+
+GOSSVER=v0.3.21
+str6="curl -L https://github.com/aelsabbahy/goss/releases/download/${GOSSVER}/goss-linux-amd64 -o goss"
+
+#DOCKERREL=1.29.2
+#str7="curl -L https://github.com/docker/compose/releases/download/${DOCKERREL}/docker-compose-$(uname -s)-$(uname -m) -o docker-compose"
+
+#GESTSUPREL=3.2.30
+#str8="wget -nc 'https://gestsup.fr/index.php?page=download&channel=stable&version=${GESTSUPREL}&type=gestsup' -O gestsup_${GESTSUPREL}.zip"
+str8="wget -nc 'https://gestsup.fr/index.php?page=download&channel=stable&version=3.2.30&type=gestsup' -O gestsup_3.2.30.zip"
+
+
+#METRICBEAT ET FILEBEAT
+ELKREL=8.5.3
+str81="wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${ELKREL}-amd64.deb"
+
+str82="wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${ELKREL}-windows-x86_64.zip"
+
+str83="wget https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-${ELKREL}-windows-x86_64.zip"
+
+str84="wget https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-${ELKREL}-amd64.deb"
+
+
+[[ -d "${STOREREP}" ]]|| mkdir "${STOREREP}"
+
+(cat <<EOT > "${STOREREP}/getall"
+#!/bin/bash
+
+${str}
+
+${str2}
+
+${str31}
+
+${str32}
+
+${str4}
+
+${str5}
+
+${str6}
+
+chmod +x ./goss
+
+curl -L https://get.docker.com -o getdocker.sh
+
+chmod +x ./getdocker.sh
+
+#${str7}
+
+#chmod +x ./docker-compose
+
+
+wget -nc https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 -O mkcert
+
+chmod +x ./mkcert
+
+${str8}
+
+${str81} 
+${str82} 
+${str83} 
+${str84} 
+
+EOT
+)
+
+cat "${STOREREP}/getall"

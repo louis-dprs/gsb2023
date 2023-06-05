@@ -1,0 +1,15 @@
+#!/bin/bash
+apt-get  update
+#apt upgrade -y;
+mkdir -p tools/ansible
+cd tools/ansible
+git clone https://gitea.lyc-lecastel.fr/gadmin/gsb2023.git;
+cd gsb2023/pre
+bash inst-depl
+cd /var/www/html/gsbstore
+bash getall
+cd /root/tools/ansible/gsb2023/pre
+bash gsbboot
+cd ..
+bash pull-config
+

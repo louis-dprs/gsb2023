@@ -1,0 +1,51 @@
+HashKnownHosts yes
+
+Host s-proxy
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-proxy
+    hostname s-proxy.gsb.adm
+
+Host s-infra
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-infra
+    hostname s-infra.gsb.adm
+
+Host s-appli
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-appli
+    hostname s-appli.gsb.adm
+
+Host s-mess
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-mess
+    hostname s-mess.gsb.adm
+
+Host s-itil
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-itil
+    hostname s-itil.gsb.adm
+
+Host s-mon
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-mon
+    hostname s-mon.gsb.adm
+
+Host s-backup
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-backup
+    hostname s-backup.gsb.adm
+
+Host r-int
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/r-int
+    hostname r-int.gsb.adm
+
+Host r-ext
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/r-ext
+    hostname r-ext.gsb.adm
+
+Host s-mon
+    user root
+#    UserKnownHostsFile=~/.ssh/known_hosts/s-spec
+    hostname s-mon.gsb.adm

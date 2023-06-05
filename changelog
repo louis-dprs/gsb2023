@@ -1,0 +1,7 @@
+v5.0.2.j : 2019-01-25 -kb
+  ejout role s-nas-cliet et s-nas-server
+v5.0.1 : 2019-01-24 - ps
+  reorganisation : anciens playbooks et roles deplaces dans repertoire old
+v3.2.0 : 2017-11-16 - ps 
+  ajout changelog
+

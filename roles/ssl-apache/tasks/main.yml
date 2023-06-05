@@ -1,0 +1,51 @@
+---
+- name: Installation de openssl
+  apt:
+    name: openssl
+
+- name: Création de la clé
+  community.crypto.openssl_privatekey:
+    path: /etc/ssl/private/apache-selfsigned.key
+    mode: "640"
+    owner: root
+    group: root   
+
+- name: Création du certificat
+  community.crypto.x509_certificate:
+    path: /etc/ssl/certs/apache-selfsigned.crt
+    privatekey_path: /etc/ssl/private/apache-selfsigned.key
+    provider: selfsigned
+    mode: "644"
+    owner: root
+    group: root
+
+- name: Suppression du fichier 000-default.conf
+  file:
+    path: /etc/apache2/sites-available/000-default.conf
+    state: absent
+
+- name: Supression du fichier default-ssl.conf
+  file:
+    path: /etc/apache2/sites-available/default-ssl.conf
+    state: absent
+
+- name: Supression du fichier ports.conf
+  file:
+    path: /etc/apache2/ports.conf
+    state: absent
+    
+- name: ajout de la redirection https
+  copy:
+    src: 000-default.conf
+    dest: /etc/apache2/sites-available
+
+- name: ajout du site https
+  copy:
+    src: default-ssl.conf
+    dest: /etc/apache2/sites-available
+
+- name: ajout du port 443
+  copy:
+    src: ports.conf
+    dest: /etc/apache2
+  notify: restart apache2

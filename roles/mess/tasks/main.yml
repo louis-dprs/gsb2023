@@ -1,0 +1,15 @@
+---
+#- name: Installation openLDAP
+#  apt: name=slapd state=present update_cache=yes
+
+#- name: Copie du slapd.conf
+#  copy: src=slapd.conf dest=/etc/openldap
+
+- name: Copie du nslcd.conf
+  copy: src=nslcd.conf dest=/etc/
+
+- name: Copie du pam_ldap.conf
+  copy: src=pam_ldap.conf dest=/etc/
+
+- name: Recup du depot git
+  git: repo=https://github.com/YunoHost/install_script dest=/tmp/install_script

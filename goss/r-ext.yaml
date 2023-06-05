@@ -1,0 +1,40 @@
+command:
+  sysctl net.ipv4.ip_forward:
+    exit-status: 0
+    stdout:
+    - net.ipv4.ip_forward = 1
+    stderr: []
+    timeout: 10000
+  ping -c 4 172.16.0.1:
+    exit-status: 0
+    stdout:
+    - 0% packet loss
+    stderr: []
+    timeout: 10000
+  ping -c 4 172.16.0.254:
+    exit-status: 0
+    stdout:
+    - 0% packet loss
+    stderr: []
+    timeout: 10000
+  ping -c 4 192.168.200.254:
+    exit-status: 0
+    stdout:
+    - 0% packet loss
+    stderr: []
+    timeout: 10000
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.13/24
+  enp0s8:
+    exists: true
+    addrs:
+    - 192.168.100.254/24
+  enp0s9:
+    exists: true
+  enp0s16:
+    exists: true
+    addrs:
+    - 192.168.200.253/24

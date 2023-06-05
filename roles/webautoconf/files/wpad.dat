@@ -1,0 +1,12 @@
+// config automatique
+// PS - 2015-06-09
+function FindProxyForURL(url, host)
+    {
+        if (isPlainHostName(host) ||
+            dnsDomainIs(host, "gsb.lan") ||
+            isInNet(host, "172.16.0.0", "255.255.255.0") || 
+            isInNet(host, "127.0.0.1", "255.255.255.255"))
+            return "DIRECT";
+        else
+            return "PROXY 172.16.0.2:8080";
+    }

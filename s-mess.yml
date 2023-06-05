@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - docker-nextcloud
+    - ssh-cli
+    - syslog-cli
+    - snmp-agent
+    - post

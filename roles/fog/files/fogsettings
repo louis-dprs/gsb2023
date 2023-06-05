@@ -1,0 +1,46 @@
+## Start of FOG Settings
+## Created by the FOG Installer
+## Find more information about this file in the FOG Project wiki:
+##     https://wiki.fogproject.org/wiki/index.php?title=.fogsettings
+## Version: 1.5.9
+## Install time: jeu. 26 janv. 2023 11:41:05
+ipaddress='172.16.64.16'
+copybackold='0'
+interface='enp0s9'
+submask='255.255.255.0'
+hostname='s-fog.gsb.lan'
+routeraddress='192.168.99.99'
+plainrouter='192.168.99.99'
+dnsaddress='172.16.0.1'
+username='fogproject'
+password='/7ElC1OHrP47EN2w59xl'
+osid='2'
+osname='Debian'
+dodhcp='y'
+bldhcp='1'
+dhcpd='isc-dhcp-server'
+blexports='1'
+installtype='N'
+snmysqluser='fogmaster'
+snmysqlpass='HHO5vSGqFiHE_9d2lja3'
+snmysqlhost='localhost'
+mysqldbname='fog'
+installlang='0'
+storageLocation='/images'
+fogupdateloaded=1
+docroot='/var/www/html/'
+webroot='/fog/'
+caCreated='yes'
+httpproto='http'
+startrange='172.16.64.10'
+endrange='172.16.64.254'
+bootfilename='undionly.kpxe'
+packages='apache2 bc build-essential cpp curl g++ gawk gcc genisoimage git gzip htmldoc isc-dhcp-server isolinux lftp libapache2-mod-php7.4 libc6 libcurl4 li>
+noTftpBuild=''
+sslpath='/opt/fog/snapins/ssl/'
+backupPath='/home/'
+armsupport='0'
+php_ver='7.4'
+php_verAdds='-7.4'
+sslprivkey='/opt/fog/snapins/ssl//.srvprivate.key'
+## End of FOG Settings

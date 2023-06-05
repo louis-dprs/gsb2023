@@ -1,0 +1,28 @@
+port:
+  tcp:80:
+    listening: true
+    ip:
+    - 192.168.100.11
+service:
+  haproxy:
+    enabled: true
+    running: true
+  sshd:
+    enabled: true
+    running: true
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.100/24
+    mtu: 1500
+  enp0s8:
+    exists: true
+    addrs:
+    - 192.168.100.11/24
+    mtu: 1500
+  enp0s9:
+    exists: true
+    addrs:
+    - 192.168.101.254/24
+    mtu: 1500

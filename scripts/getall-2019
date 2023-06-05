@@ -1,0 +1,16 @@
+#!/bin/bash
+GLPIREL=9.3.3
+wget -nc https://github.com/glpi-project/glpi/releases/download/$GLPIREL/glpi-$GLPIREL.tgz
+
+wget -nc https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi9.3%2B1.2/fusioninventory-9.3+1.2.tar.gz
+
+FIAGREL=2.4.2 
+wget -nc https://github.com/fusioninventory/fusioninventory-agent/releases/download/$FIAGREL/fusioninventory-agent_windows-x64_$FIAGREL.exe
+
+wget -nc https://github.com/fusioninventory/fusioninventory-agent/releases/download/$FIAGREL/fusioninventory-agent_windows-x86_$FIAGREL.exe
+
+FOGREL=1.5.5
+wget -nc https://github.com/FOGProject/fogproject/archive/$FOGREL.tar.gz -O fogproject-$FOGREL.tar.gz
+
+#wget -nc https://fr.wordpress.org/wordpress-4.9.1-fr_FR.tar.gz
+wget -nc https://fr.wordpress.org/wordpress-5.0.3-fr_FR.tar.gz

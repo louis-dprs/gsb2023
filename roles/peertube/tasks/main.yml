@@ -1,0 +1,28 @@
+---
+  - name: création du répertoire du dépot peertube...
+    file:
+      path: /root/tools/peertube
+      state: directory
+      mode: '0755'
+
+  - name: clonage du dépot peertube...
+    git:
+      repo: https://github.com/Elam-Monnot/Peertube-helm.git
+      dest: /root/tools/peertube
+      clone: yes
+      force: yes
+
+  - name: copie de values.yaml...
+    copy:
+      src: /root/tools/ansible/gsb2023/roles/peertube/files/values.yaml
+      dest: /root/tools/peertube/helm/
+      mode: '0644'
+
+  - name: copie du script finish...
+    copy:
+      src: /root/tools/ansible/gsb2023/roles/peertube/files/finish
+      dest: /root
+      mode: '0644'
+
+  - name: installation de helm...
+    shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash

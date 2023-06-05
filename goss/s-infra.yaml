@@ -1,0 +1,90 @@
+package:
+  bind9:
+    installed: true
+  lighttpd:
+    installed: true
+addr:
+  tcp://192.168.99.99:8080:
+    reachable: true
+    timeout: 500
+port:
+  tcp:80:
+    listening: true
+    ip:
+    - 0.0.0.0
+  tcp6:80:
+    listening: true
+    ip:
+    - '::'
+service:
+  bind9:
+    enabled: true
+    running: true
+  lighttpd:
+    enabled: true
+    running: true
+command:
+  host 172.16.0.2:
+    exit-status: 0
+    stdout:
+    - 2.0.16.172.in-addr.arpa domain name pointer s-proxy.gsb.lan.
+    stderr: []
+    timeout: 10000
+  host 172.16.0.9:
+    exit-status: 0
+    stdout:
+    - 9.0.16.172.in-addr.arpa domain name pointer s-itil.gsb.lan.
+    stderr: []
+    timeout: 10000
+  host free.fr:
+    exit-status: 0
+    stdout:
+    - free.fr has address 212.27.48.10
+    - free.fr has IPv6 address 2a01:e0c:1::1
+    - free.fr mail is handled by 10 mx1.free.fr.
+    - free.fr mail is handled by 20 mx2.free.fr.
+    stderr: []
+    timeout: 10000
+  host s-infra:
+    exit-status: 0
+    stdout:
+    - s-infra.gsb.lan has address 172.16.0.1
+    stderr: []
+    timeout: 10000
+  host s-infra.gsb.lan:
+    exit-status: 0
+    stdout:
+    - s-infra.gsb.lan has address 172.16.0.1
+    stderr: []
+    timeout: 10000
+  host s-mon:
+    exit-status: 0
+    stdout:
+    - s-mon.gsb.lan has address 172.16.0.8
+    stderr: []
+    timeout: 10000
+  host s-mon.gsb.lan:
+    exit-status: 0
+    stdout:
+    - s-mon.gsb.lan has address 172.16.0.8
+    stderr: []
+    timeout: 10000
+process:
+  lighttpd:
+    running: true
+interface:
+  enp0s3:
+    exists: true
+    addrs:
+    - 192.168.99.1/24
+  enp0s8:
+    exists: true
+    addrs:
+    - 172.16.0.1/24
+http:
+  http://localhost/wpad.dat:
+    status: 200
+    allow-insecure: false
+    no-follow-redirects: false
+    timeout: 5000
+    body: []

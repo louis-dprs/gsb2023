@@ -1,0 +1,25 @@
+### 0.2 - putconf - jeudi 7 janvier 2016, 16:18:49 (UTC+0100)
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# n-adm
+allow-hotplug enp0s3
+iface enp0s3 inet static
+	address 192.168.99.103
+	netmask 255.255.255.0
+
+# n-dmz-lb
+allow-hotplug enp0s8
+iface enp0s8 inet static
+        address 192.168.101.3
+        netmask 255.255.255.0
+
+# n-dmz-db
+allow-hotplug enp0s9
+iface enp0s9 inet static
+        address 192.168.102.3
+        netmask 255.255.255.0
+
+

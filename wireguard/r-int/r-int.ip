@@ -1,0 +1,36 @@
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:c9:4e:0b brd ff:ff:ff:ff:ff:ff
+    inet 192.168.99.12/24 brd 192.168.99.255 scope global enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fec9:4e0b/64 scope link 
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:34:ef:8f brd ff:ff:ff:ff:ff:ff
+    inet 192.168.200.254/24 brd 192.168.200.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe34:ef8f/64 scope link 
+       valid_lft forever preferred_lft forever
+4: enp0s9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:56:72:01 brd ff:ff:ff:ff:ff:ff
+    inet 172.16.65.254/24 brd 172.16.65.255 scope global enp0s9
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe56:7201/64 scope link 
+       valid_lft forever preferred_lft forever
+5: enp0s10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:7c:d7:5b brd ff:ff:ff:ff:ff:ff
+    inet 172.16.64.254/24 brd 172.16.64.255 scope global enp0s10
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe7c:d75b/64 scope link 
+       valid_lft forever preferred_lft forever
+6: enp0s16: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:e6:59:3d brd ff:ff:ff:ff:ff:ff
+    inet 172.16.0.254/24 brd 172.16.0.255 scope global enp0s16
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fee6:593d/64 scope link 
+       valid_lft forever preferred_lft forever

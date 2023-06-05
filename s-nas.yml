@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+       wp_mysql_db: "wordpress"
+       wp_mysql_user: "wp"
+       wp_mysql_password: "wp"
+       wp_mysql_host: "192.168.102.254"
+    
+  roles:
+    - base
+    - snmp-agent
+    - lb-nfs-server
+    - ssh-cli
+    - syslog-cli
+    - post

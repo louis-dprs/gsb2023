@@ -1,0 +1,4 @@
+#!/bin/sh
+chm="/var/www/html/glpi/files/_dumps"
+# Dump base GLPI
+mysqldump -uroot -proot glpi |gzip > $chm/$(date +%Y-%m-%d).sql.gz

@@ -1,0 +1,22 @@
+---
+
+- name: Installation lighttpd 
+  apt: name=lighttpd state=present 
+
+- user: name=adm shell=/bin/bash password=no
+
+- user: name=adm generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/id_rsa
+
+- name: Copie du fichier .ssh/config 
+  copy: src=config dest=/home/adm/.ssh/
+
+- name: Copie de la clé publique dans le repertoire web
+  copy: remote_src=true src=/home/adm/.ssh/id_rsa.pub dest=/var/www/html
+  notify: 
+    - restart lighttpd 
+
+      #- name: Copie de la signature des machines 
+      #  copy: src=known_hosts dest=/home/adm/.ssh/
+      #  notify: 
+      #    - restart apache2 
+

@@ -1,0 +1,9 @@
+default via 192.168.0.1 dev enp0s9 
+169.254.0.0/16 dev enp0s3 scope link metric 1000 
+172.16.0.0/24 via 192.168.200.254 dev enp0s16 
+172.16.128.0/24 via 192.168.1.2 dev enp0s10 
+192.168.0.0/24 dev enp0s9 proto kernel scope link src 192.168.0.20 
+192.168.1.0/24 dev enp0s10 proto kernel scope link src 192.168.1.1 
+192.168.99.0/24 dev enp0s3 proto kernel scope link src 192.168.99.13 
+192.168.100.0/24 dev enp0s8 proto kernel scope link src 192.168.100.254 
+192.168.200.0/24 dev enp0s16 proto kernel scope link src 192.168.200.253 

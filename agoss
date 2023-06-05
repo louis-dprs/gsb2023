@@ -1,0 +1,11 @@
+#!/bin/bash
+HOST=$(hostname)
+FHOST=$(pwd)/goss/$HOST
+if [ -r "$FHOST".yaml ] ; then
+	#goss -gossfile "$FHOST".yaml v --no-color
+	goss -gossfile "$FHOST".yaml v "$@"
+else
+	echo $0 : erreur lecture fichier "$FHOST".yaml 
+	exit 1 
+fi
+

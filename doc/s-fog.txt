@@ -1,0 +1,11 @@
+fichier de documentation réalier par Olivier Soares et Gaetan Maillard, le 25/01/2019
+
+Pour mettre en oeuvre le serveur fog, il faut déployer une machine virtuel debian (une ova), de la mettre à jour, de la renommer (s-fog), puis de récupérer gsbboot et faire un bash pull-config.
+
+Après avoir avoir fait l'installation de base, il suffit d'éxécuter le playbook "s-fog.yml" avec la commande ansible-playbooks -i hosts s-fog.yml". Ce playbook va récupérer le fichier d'installation de fog, le décompacter et configurer les différentes cartes réseaux de s-fog sachant qu'il y en a trois:
+
+L'interface enp0s3 permet d'avoir accès internet via le réseau "n-adm"
+L'interface enp0s8 permet de communiquer avec le réseau "n-infra"
+L'interface enp0s9 permet d'avoir accès et deployer des postes sur le réseau "n-user"
+
+Maintenant le serveur fog est prêt à être installer, avant de commencer l'installation il faut tout d'abord vérifier que l'accès à tous les réseaux soit correcte. Pour ça il suffit d'éxécuter le fichier de test goss

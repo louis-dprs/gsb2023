@@ -1,0 +1,23 @@
+---
+ - hosts: localhost
+   connection: local
+   vars:
+        maria_dbhost: "192.168.102.254"
+        maria_dbname: "wordpress"
+        maria_dbuser: "wp"
+        maria_dbpasswd: "wp"
+
+
+   roles:
+     - base
+     - goss
+#    - s-lb-bd
+     - mariadb
+     - role: db-user
+       cli_ip: "192.168.102.1"
+     - role: db-user
+       cli_ip: "192.168.102.2"
+     - role: db-user
+       cli_ip: "192.168.102.3"     
+     - snmp-agent
+     - post

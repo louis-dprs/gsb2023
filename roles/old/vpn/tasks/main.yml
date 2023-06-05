@@ -1,0 +1,23 @@
+---
+  - name: Installation Racoon
+    apt: name=racoon state=present update_cache=yes
+
+  - name: install ipsec-tools
+    apt: name=ipsec-tools state=present update_cache=yes
+
+  - name: install tcpdump
+    apt: name=tcpdump state=present update_cache=yes
+
+  - name: generation racoon.conf
+    template: src=racoon.conf.j2 dest=/etc/racoon/racoon.conf
+
+  - name: generation ipsec-tools.conf
+    template: src=ipsec-tools.conf.j2 dest=/etc/ipsec-tools.conf
+    notify: restart setkey
+
+  - name: generation psk.txt
+    template: src=psk.txt.j2 dest=/etc/racoon/psk.txt
+    notify: restart racoon
+
+  - name: activation du routage
+    copy: src=sysctl.conf dest=/etc/sysctl.conf

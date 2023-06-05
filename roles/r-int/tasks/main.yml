@@ -1,0 +1,29 @@
+---
+
+- name: Copie du fichier sysctl.conf
+  copy: src=sysctl.conf dest=/etc/
+
+#- name: copier le script de routage
+#  copy: src=routagenat dest=/root/
+
+#- name: rendre executabe le script
+#  shell: chmod +x /root/routagenat 
+
+  #- name: exectuer le script
+  #  script: /root/routagenat
+
+  #- name: copier fog server
+  #get_url: url="http://depl/gsbstore/fog_1.4.4.tar.gz" dest=/tmp/fog.tar.gz
+
+  #- name: extraction fog.tar.gz
+  #unarchive: src=/tmp/fog.tar.gz  dest=/var/www/ copy=no
+
+#- name: delais 2 secondes isc-dhcp-service
+#  become: yes
+#  lineinfile:
+#    path: /etc/init.d/isc-dhcp-server
+#    insertafter: '^\s+start\)$'
+#    line: "                sleep 2"
+#    firstmatch: yes
+#    state: present
+#    backup: yes

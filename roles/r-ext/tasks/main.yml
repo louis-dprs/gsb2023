@@ -1,0 +1,24 @@
+---
+
+- name: Copie du fichier sysctl.conf
+  copy: 
+    src: sysctl.conf
+    dest: /etc/
+
+- name: copier le script de routage
+  copy: 
+    src: nat.sh
+    dest: /root/
+    mode: '0755'
+
+- name: installer ferm
+  apt: 
+    name: ferm
+    state: present
+    update_cache: yes
+
+- name: copier le fichier ferm.conf
+  copy: 
+    src: ferm.conf
+    dest: /etc/ferm/
+

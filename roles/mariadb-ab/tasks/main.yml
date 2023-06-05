@@ -1,0 +1,42 @@
+---
+- name: Installation des paquets python-mysqldb mariadb-server
+  apt: 
+    name:
+    - python3-mysqldb
+    - mariadb-server
+    - python3-passlib
+    - python3-pymysql
+    state: present
+
+- name: python3 par defaut
+  alternatives:
+    link: /usr/bin/python
+    name: python
+    path: /usr/bin/python3
+    priority: 10
+
+- name: Create mysql database
+  mysql_db: 
+    name: "{{ maria_dbname }}" 
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Creation de l'utilisateur mysql avec tous les privileges
+  mysql_user:
+    name: "{{ maria_dbuser }}"
+    password: "{{ maria_dbpasswd }}"
+    priv: '*.*:ALL,GRANT'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    host: 192.168.102.%
+#    - ::1
+#    - localhost
+
+- name: Copie du fichier my.cnf pour autorises toutes les adresses sur le port 3306
+  copy:
+    src: my.cnf
+    dest: /etc/mysql/
+ 
+- name: Redemarrage du service mariadb
+  service: 
+    name: mariadb
+    state: restarted

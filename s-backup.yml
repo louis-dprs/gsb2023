@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - base
+    - goss
+#   - proxy3
+    - snmp-agent
+#   - ssh-cli
+    - syslog-cli
+    - smb-backup
+    - dns-slave
+    - post

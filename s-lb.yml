@@ -1,0 +1,12 @@
+---
+ - hosts: localhost
+   connection: local
+
+   roles:
+     - base
+     - goss
+     - lb-front
+     - snmp-agent
+     - ssh-cli
+     - post
+

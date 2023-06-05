@@ -1,0 +1,38 @@
+- name: Installation bind9
+  apt:
+    name: bind9
+    state: present
+
+- name: Copie named.conf.options
+  copy:
+    src: named.conf.options
+    dest: /etc/bind
+  notify:
+    - restart bind9
+
+- name: Copie named.conf.local
+  copy:
+    src: named.conf.local
+    dest: /etc/bind
+  notify:
+    - restart bind9
+
+- name: Copie resolv.conf
+  copy:
+    src: resolv.conf
+    dest: /etc
+  notify:
+    - restart bind9
+
+- name: Changement de droit pour le répertoire /etc/bind
+  ansible.builtin.lineinfile:
+    path: /etc/apparmor.d/usr.sbin.named
+    regexp: '  /etc/bind/\*\* r,'
+    line: '  /etc/bind/** rw,'
+ 
+
+- name: Changement de permission pour le groupe de /etc/bind
+  ansible.builtin.file:
+    path: /etc/bind/
+    state: directory
+    mode: g=rwx

@@ -1,0 +1,7 @@
+#!/bin/bash
+#IPADD=$(root/ipFerm.sh| tr -d '\n')
+#MSG="@def $HOST_STATIC = $
+echo -n -E "@def \$HOST_STATIC ="
+/root/tools/ansible/gsb2022/roles/r-ext/files/ipFerm.sh |tr -d '\n' 
+echo  ";" 
+

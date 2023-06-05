@@ -1,0 +1,179 @@
+#!/usr/bin/perl
+
+#use strict;
+#use warnings;
+#SCRIPT PERMETTANT DE METTRE LES INTERFACES APPROPRIEES POUR LA MACHINE ENTREE EN PARAMETRE ET DE LA DEMARRER
+my %machines = (
+             's-infra' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-proxy' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-spec' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-mon' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-mess' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-itil' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-proxy' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-backup' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             's-appli' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-infra'
+             },
+             'r-int' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-link',
+		    netif3 => 'n-wifi',
+		    netif4 => 'n-user',
+		    netif5 => 'n-infra'
+             },
+             'r-ext' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-dmz',
+		    netif3 => 'enp0s3',
+                    netif4 => 'n-linkv',
+                    netif5 => 'n-link'
+             },
+             'r-vp2' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-agence',
+                    netif3 => 'enp0s3'
+             },
+             'r-vp1' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'enp0s3',
+                    netif3 => 'n-linkv' 
+             },
+             's-lb' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-dmz',
+                    netif3 => 'n-dmz-lb'
+             },
+             's-lb-bd' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-dmz-db'
+                    
+             },
+             's-lb-web1' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-dmz-lb',
+                    netif3 => 'n-dmz-db'
+             },
+             's-lb-web2' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-dmz-lb',
+                    netif3 => 'n-dmz-db'
+             },
+  	     's-nas' => {
+                    netif1 => 'n-adm',
+                    netif2 => 'n-dmz-db',
+             }
+
+
+
+
+
+
+
+);
+
+
+my ($net1, $net2, $net3, $net4, $net5);
+
+my $machine = shift;
+die "usage : gsbstart <machine>" unless ( $machine);
+
+#print $machines { $machine }  "\n";
+if (%{$machines{$machine}}) { 
+#	print $machines { $machine } {netif1}, "\n";
+        $net1   =  $machines { $machine } {netif1};
+        $net2   =  $machines { $machine } {netif2};
+	$net3   =  $machines { $machine } {netif3};
+        $net4   =  $machines { $machine } {netif4};
+        $net5   =  $machines { $machine } {netif5};
+
+	
+
+} else {
+	print "machine $machine inconnue\n";
+}
+#
+  
+my $ninfra = "VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\""; 
+
+my $rint = "VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\"\nVBoxManage modifyvm ".$machine. " --nic3 intnet\nVBoxManage modifyvm ".$machine. " --intnet3 \"". $net3."\"\nVBoxManage modifyvm ".$machine. " --nic4 intnet\nVBoxManage modifyvm ".$machine. " --intnet4 \"". $net4."\"\nVBoxManage modifyvm ".$machine. " --nic5 intnet\nVBoxManage modifyvm ".$machine. " --intnet5 \"". $net5."\"";
+
+my $rext = "VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\"\nVBoxManage modifyvm ".$machine. " --nic3 bridged\nVBoxManage modifyvm ".$machine. " --bridgeadapter1 ". $net3."\nVBoxManage modifyvm ".$machine. " --nic4 intnet\nVBoxManage modifyvm ".$machine. " --intnet4 \"". $net4."\"\nVBoxManage modifyvm ".$machine. " --nic5 intnet\nVBoxManage modifyvm ".$machine. " --intnet5 \"". $net5."\"";
+
+my $rvp2 = "VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\"\nVBoxManage modifyvm ".$machine. " --nic3 bridged\nVBoxManage modifyvm ".$machine. " --bridgeadapter1 ". $net3."\n";
+
+my $rvp1 = "VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 bridged\nVBoxManage modifyvm ".$machine. " --bridgeadapter1 ". $net2 ."\nVBoxManage modifyvm ".$machine. " --nic3 intnet\nVBoxManage modifyvm ".$machine. " --intnet3 \"". $net3."\"\n";
+
+my $lb = "VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\"\nVBoxManage modifyvm ".$machine. " --nic3 intnet\nVBoxManage modifyvm ".$machine. " --intnet3 ". $net3."\n";
+
+my $lbbd ="VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\"\n";
+
+my $lbweb = "VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\"\nVBoxManage modifyvm ".$machine. " --nic3 intnet\nVBoxManage modifyvm ".$machine. " --intnet3 \"". $net3."\"\n"; 
+
+my $snas ="VBoxManage modifyvm ".$machine. " --nic1 intnet\nVBoxManage modifyvm ".$machine. " --intnet1 \"". $net1."\"\nVBoxManage modifyvm ".$machine. " --nic2 intnet\nVBoxManage modifyvm ".$machine. " --intnet2 \"". $net2."\"\n";
+
+#print $routeur;
+
+
+if ($machine eq "r-int") {
+		qx($rint);
+		print "la création des interfaces du routeur $machine a fonctionné!\n";
+}else{
+	if ($machine eq "r-ext") {
+		qx($rext);
+	}else{
+		qx($ninfra);
+		print "la création des interfaces de $machine a fonctionné!\n";
+	}	
+}
+if ($machine eq "r-vp2") {
+	qx($rvp2);
+}
+if ($machine eq "r-vp1") {
+        qx($rvp1);
+}
+if ($machine eq "s-lb"){
+	qx($lb);
+}
+if ($machine eq "s-lb-web1"){
+	qx($lbweb);
+}
+if ($machine eq "s-lb-web2"){
+        qx($lbweb);
+}
+if ($machine eq "s-lb-bd"){
+        qx($lbbd);
+}
+if ($machine eq "s-nas"){
+        qx($snas);
+}
+
+qx(VBoxManage startvm $machine);	
+	
+
+

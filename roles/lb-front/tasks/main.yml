@@ -1,0 +1,25 @@
+- name: install haproxy
+  apt:
+    name: haproxy
+    state: present
+
+- name: parametre backend et fontend
+  blockinfile:
+    path: /etc/haproxy/haproxy.cfg
+    block: |
+      frontend proxypublic
+        bind 192.168.100.10:80
+        default_backend fermeweb
+      
+      backend fermeweb
+        balance roundrobin
+        option httpclose
+        #option httpchk HEAD / HTTP/1.0
+        server s-lb-web1 192.168.101.1:80 check
+        server s-lb-web2 192.168.101.2:80 check
+
+- name: redemarre haproxy
+  service:
+    name: haproxy
+#    state: restarted
+    enabled: yes
